@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Briefing einer Premium-Website",
+  "description": "Strukturierte Fassung der Fragebogen-Antworten. Wird vom briefing-agent als projekte/<slug>/briefing.json geschrieben und von allen Folgeagenten gelesen.",
+  "type": "object",
+  "required": ["meta", "unternehmen", "ziele", "zielgruppen", "wettbewerb", "marke", "gestaltung"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["slug", "modus", "erstellt"],
+      "properties": {
+        "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "modus": { "type": "string", "enum": ["neu", "verbessern"] },
+        "erstellt": { "type": "string", "format": "date-time" },
+        "quelle": { "type": "string", "description": "fragebogen | gespraech | audit+kurzfragebogen" },
+        "annahmen": { "type": "array", "items": { "type": "string" }, "description": "Alles, was nicht vom Kunden stammt, sondern abgeleitet wurde." }
+      }
+    },
+    "unternehmen": {
+      "type": "object",
+      "required": ["name", "leistung"],
+      "properties": {
+        "name": { "type": "string" },
+        "leistung": { "type": "string", "description": "Ein Satz." },
+        "branche": { "type": "string" },
+        "region": { "type": "string" },
+        "groesse": { "type": "string" },
+        "gegruendet": { "type": "string" },
+        "geschichte": { "type": "string" },
+        "unterschied": { "type": "string", "description": "Was das Unternehmen wirklich anders macht." },
+        "aktuelleWebsite": { "type": ["string", "null"] },
+        "weitereKanaele": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "ziele": {
+      "type": "object",
+      "required": ["primaer"],
+      "properties": {
+        "primaer": { "type": "string", "enum": ["anfragen", "verkauf", "termine", "recruiting", "image", "information", "sonstiges"] },
+        "sekundaer": { "type": "array", "items": { "type": "string" } },
+        "kpis": { "type": "array", "items": { "type": "string" } },
+        "zehnSekunden": {
+          "type": "object",
+          "properties": { "denken": { "type": "string" }, "fuehlen": { "type": "string" }, "tun": { "type": "string" } }
+        },
+        "conversionHeute": { "type": "string" },
+        "conversionZiel": { "type": "string" }
+      }
+    },
+    "zielgruppen": {
+      "type": "object",
+      "required": ["primaer"],
+      "properties": {
+        "primaer": { "$ref": "#/$defs/persona" },
+        "sekundaer": { "type": "array", "items": { "$ref": "#/$defs/persona" } },
+        "entscheidungsweg": { "type": "string" },
+        "einwaende": { "type": "array", "items": { "type": "string" } },
+        "nutzungssituation": { "type": "string" },
+        "sprachen": { "type": "array", "items": { "type": "string" }, "default": ["de"] },
+        "ansprache": { "type": "string", "enum": ["Sie", "Du"] }
+      }
+    },
+    "wettbewerb": {
+      "type": "object",
+      "properties": {
+        "direkt": { "type": "array", "items": { "$ref": "#/$defs/wettbewerber" } },
+        "gefaellt": { "type": "string" },
+        "stoert": { "type": "string" },
+        "nichtDorthin": { "type": "string", "description": "Wohin die Seite ausdrücklich nicht soll." },
+        "vorbilder": { "type": "array", "items": { "type": "object", "properties": { "url": { "type": "string" }, "warum": { "type": "string" } } } },
+        "branchenveraenderung": { "type": "string" }
+      }
+    },
+    "marke": {
+      "type": "object",
+      "properties": {
+        "adjektive": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "object", "required": ["ist", "nicht"], "properties": { "ist": { "type": "string" }, "nicht": { "type": "string" } } }
+        },
+        "persona": { "type": "string" },
+        "ciVorhanden": { "type": "object", "properties": { "logo": { "type": "boolean" }, "farben": { "type": "array", "items": { "type": "string" } }, "schriften": { "type": "array", "items": { "type": "string" } }, "styleguide": { "type": "boolean" }, "bildwelt": { "type": "string" } } },
+        "freiheitsgrad": { "type": "string", "enum": ["bewahren", "weiterentwickeln", "neu"] },
+        "naheMarken": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "inhalt": {
+      "type": "object",
+      "properties": {
+        "seiten": { "type": "array", "items": { "type": "string" } },
+        "vorhanden": { "type": "string" },
+        "shooting": { "type": "string" },
+        "beweise": { "type": "array", "items": { "type": "string" } },
+        "redaktion": { "type": "string" },
+        "mehrsprachig": { "type": "string" },
+        "rechtliches": { "type": "object", "properties": { "bfsgPflicht": { "type": ["boolean", "null"] }, "branchenpflichten": { "type": "string" }, "vorhanden": { "type": "array", "items": { "type": "string" } } } }
+      }
+    },
+    "funktionen": {
+      "type": "array",
+      "items": { "type": "object", "required": ["name"], "properties": { "name": { "type": "string" }, "details": { "type": "string" }, "prioritaet": { "type": "string", "enum": ["muss", "soll", "kann"] } } }
+    },
+    "gestaltung": {
+      "type": "object",
+      "required": ["bewegung", "mut"],
+      "properties": {
+        "bewegung": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "mut": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "farbschema": { "type": "string", "enum": ["hell", "dunkel", "beides", "offen"] },
+        "geliebteWebsites": { "type": "array", "items": { "type": "object", "properties": { "url": { "type": "string" }, "warum": { "type": "string" } } } },
+        "noGos": { "type": "array", "items": { "type": "string" } },
+        "symbol": { "type": "string", "description": "Material, Ort, Prozess oder Objekt, das das Unternehmen symbolisiert." }
+      }
+    },
+    "technik": {
+      "type": "object",
+      "properties": {
+        "hosting": { "type": "string" },
+        "domain": { "type": "string" },
+        "pflege": { "type": "string" },
+        "cmsWunsch": { "type": "string", "enum": ["ja", "nein", "egal"] },
+        "integrationen": { "type": "array", "items": { "type": "string" } },
+        "tracking": { "type": "string" },
+        "budget": { "type": "string" },
+        "zeitplan": { "type": "string" }
+      }
+    },
+    "entscheidung": {
+      "type": "object",
+      "properties": {
+        "entscheider": { "type": "array", "items": { "type": "string" } },
+        "feedbackRunden": { "type": "string" },
+        "abnahmekriterien": { "type": "array", "items": { "type": "string" } },
+        "sonstiges": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "persona": {
+      "type": "object",
+      "required": ["beschreibung"],
+      "properties": {
+        "name": { "type": "string" },
+        "beschreibung": { "type": "string" },
+        "situation": { "type": "string" },
+        "ziel": { "type": "string" },
+        "problem": { "type": "string" }
+      }
+    },
+    "wettbewerber": {
+      "type": "object",
+      "required": ["url"],
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "kommentar": { "type": "string" }
+      }
+    }
+  }
+}

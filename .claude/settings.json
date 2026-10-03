@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:*)",
+      "Agent",
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(node scripts/*)",
+      "Bash(node ./scripts/*)",
+      "Bash(bash scripts/*)",
+      "Bash(bash ./scripts/*)",
+      "Bash(npm install*)",
+      "Bash(npm ci*)",
+      "Bash(npm run *)",
+      "Bash(npx lighthouse*)",
+      "Bash(npx --yes lighthouse*)",
+      "Bash(npx playwright*)",
+      "Bash(npm create *)",
+      "Bash(npx astro*)",
+      "Bash(npx tsc*)",
+      "Bash(npx prettier*)",
+      "Bash(npx eslint*)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(cat *)",
+      "Bash(curl -I *)",
+      "Bash(curl -sI *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Bash(git push --force*)"
+    ]
+  }
+}

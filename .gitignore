@@ -1,0 +1,19 @@
+# Abhängigkeiten
+node_modules/
+scripts/node_modules/
+
+# Analyse-Ausgaben (Screenshots, Crawls, Lighthouse) – groß und projektbezogen
+analyse/*
+!analyse/.gitkeep
+
+# Projekt-Builds
+projekte/*/build/node_modules/
+projekte/*/build/dist/
+projekte/*/build/.astro/
+projekte/*/build/.next/
+
+# System
+.DS_Store
+*.log
+.env
+.env.*
