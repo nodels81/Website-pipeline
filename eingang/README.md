@@ -14,6 +14,7 @@ Start:
 bash run.sh eingang/meinprojekt.md          # eine Datei
 bash run.sh https://beispiel.de             # direkt eine URL
 bash run.sh --alle                          # alle Dateien hier, die noch kein Ergebnis haben
+.\run.ps1 eingang\meinprojekt.md           # Windows / PowerShell, Optionen als -Bis, -Ab, -Deploy …
 ```
 
 Ergebnis: `ausgang/<projekt>/` mit `ERGEBNIS.md`, `website/` (fertiger Build), `quellcode/`, `dokumentation/`,

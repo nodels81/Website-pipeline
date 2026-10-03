@@ -37,6 +37,28 @@ Was in der Eingabe fehlt, wird als gekennzeichnete Annahme ergänzt (Standardwer
 Entscheidungen an den Gates stehen mit Alternativen in `ERGEBNIS.md`; eine andere Richtung ist ein Befehl entfernt
 (`bash run.sh eingang/meinprojekt.md --ab konzept --richtung B`).
 
+## Windows (PowerShell)
+
+Dieselbe Pipeline mit `run.ps1` und denselben Optionen in PowerShell-Schreibweise:
+
+```powershell
+git clone https://github.com/nodels81/Website-pipeline
+cd Website-pipeline
+npm install -g @anthropic-ai/claude-code
+claude                                   # anmelden, Ordner-Vertrauen bestätigen, mit /exit beenden
+cd scripts; npm install; cd ..
+
+Copy-Item eingang\VORLAGE-kurzbrief.md eingang\meinprojekt.md   # ausfüllen
+.\run.ps1 eingang\meinprojekt.md
+.\run.ps1 https://beispiel.de -Bis konzept
+.\run.ps1 -Alle -Voll
+```
+
+Blockiert PowerShell das Skript: `powershell -ExecutionPolicy Bypass -File .\run.ps1 eingang\meinprojekt.md`.
+Voraussetzung unter Windows ist **Git für Windows** (bringt Git Bash mit); Claude Code braucht es ohnehin, und die
+Analyse-Skripte laufen darüber. `run.ps1` wurde in der Entwicklungs-Sandbox nicht ausgeführt (kein PowerShell dort);
+bei Problemen bitte die Meldung aus `ausgang\<projekt>\pipeline.log` prüfen.
+
 ## Interaktiv in Claude Code
 
 | Befehl | Was passiert |
@@ -52,7 +74,7 @@ Ohne Claude Code: `prompts/MASTER-PROMPT.md` ist ein eigenständiger Prompt mit 
 ## Was drin ist
 
 ```
-run.sh                 Vollautomatik: eine Eingabe, ein Paket
+run.sh / run.ps1       Vollautomatik: eine Eingabe, ein Paket (Bash / PowerShell)
 eingang/               Vorlagen für Kurzbrief und URL-Eingabe; eigene Dateien werden nicht versioniert
 ausgang/               Ergebnisse (nicht versioniert)
 pipeline.config.json   Standardwerte für fehlende Angaben, Rundenlimits, Deploy-Ziel

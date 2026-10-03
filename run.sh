@@ -19,11 +19,12 @@
 #   --trocken        nur anzeigen, was ausgeführt würde
 #
 # Ergebnis: ausgang/<slug>/ERGEBNIS.md, website/, quellcode/, dokumentation/, vorschau/, <slug>.zip
+# Windows:  .\run.ps1 ist die PowerShell-Variante mit denselben Optionen (-Bis, -Ab, -Richtung, -Deploy, -Voll, -Trocken).
 set -euo pipefail
 cd "$(dirname "$0")"
 ROOT="$(pwd)"
 
-usage () { sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
+usage () { sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
 [[ $# -eq 0 ]] && usage 1
 
 EINGABE=""; ALLE=0; BIS=""; AB=""; RICHTUNG=""; DEPLOY=""; NEU=0; VOLL=0; MODELL=""; TROCKEN=0

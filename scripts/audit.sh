@@ -18,11 +18,22 @@ SLUG=$(echo "$URL" | sed -E 's#^https?://##; s#^www\.##; s#[^A-Za-z0-9]+#-#g; s#
 OUT="${2:-analyse/$SLUG}"
 mkdir -p "$OUT/lighthouse"
 
-# Chrome finden: CHROME_PATH > Playwright-Chromium > System
+# Chrome finden: CHROME_PATH > Playwright-Chromium (Linux/macOS/Windows) > System
 if [[ -z "${CHROME_PATH:-}" ]]; then
-  for c in \
-    "$(ls -d ${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}/chromium-*/chrome-linux/chrome 2>/dev/null | sort -V | tail -1)" \
-    "$(command -v google-chrome || true)" "$(command -v chromium || true)" "$(command -v chromium-browser || true)"; do
+  PW_DIRS=("${PLAYWRIGHT_BROWSERS_PATH:-}" "$HOME/.cache/ms-playwright" "$HOME/Library/Caches/ms-playwright" "${LOCALAPPDATA:-}/ms-playwright")
+  for d in "${PW_DIRS[@]}"; do
+    [[ -n "$d" && -d "$d" ]] || continue
+    for c in "$(ls -d "$d"/chromium-*/chrome-linux/chrome 2>/dev/null | sort -V | tail -1)" \
+             "$(ls -d "$d"/chromium-*/chrome-mac*/Chromium.app/Contents/MacOS/Chromium 2>/dev/null | sort -V | tail -1)" \
+             "$(ls -d "$d"/chromium-*/chrome-win*/chrome.exe 2>/dev/null | sort -V | tail -1)"; do
+      if [[ -n "$c" && -x "$c" ]]; then export CHROME_PATH="$c"; break 2; fi
+    done
+  done
+fi
+if [[ -z "${CHROME_PATH:-}" ]]; then
+  for c in "$(command -v google-chrome || true)" "$(command -v chromium || true)" "$(command -v chromium-browser || true)" \
+           "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+           "${PROGRAMFILES:-/c/Program Files}/Google/Chrome/Application/chrome.exe"; do
     if [[ -n "$c" && -x "$c" ]]; then export CHROME_PATH="$c"; break; fi
   done
 fi

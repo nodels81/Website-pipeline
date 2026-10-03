@@ -13,7 +13,7 @@ bash run.sh https://beispiel.de      # Neubau aus einer URL (alte Seite wird nur
 bash run.sh --alle                   # alles in eingang/, was noch kein Ergebnis hat
 ```
 
-`run.sh` startet Claude Code headless mit `--auto`. Dann gibt es keine Rückfragen: Gates werden mit der Empfehlung
+`run.sh` (Bash) bzw. `run.ps1` (PowerShell) startet Claude Code headless mit `--auto`. Dann gibt es keine Rückfragen: Gates werden mit der Empfehlung
 passiert, Lücken werden zu gekennzeichneten Annahmen, Schleifen haben Limits (`pipeline.config.json`), und am Ende
 liegt immer ein Paket in `ausgang/<slug>/` (Build, Quellcode, Dokumentation, Vorschau, `ERGEBNIS.md`, ZIP).
 
