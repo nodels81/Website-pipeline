@@ -1,150 +1,155 @@
 # Die Pipeline
 
-Eine Agenten-Pipeline in Claude Code für Websites, die **exklusiv, begründet und messbar gut** sind. Zwei Einstiege
-(`/homepage-neu`, `/homepage-verbessern <url>`), zwölf Spezialagenten, vier Gates, vierzehn Artefakte.
+Eine Agenten-Pipeline in Claude Code für Websites, die **exklusiv, begründet und messbar gut** sind. Vorne eine
+Eingabe (Kurzbrief, Fragebogen oder URL), hinten ein fertiges Paket. Zwölf Spezialagenten, sechs Phasen, vier Gates,
+fünfzehn Artefakte.
+
+## Vollautomatik
+
+```bash
+bash run.sh eingang/<projekt>.md      # Kurzbrief oder Fragebogen
+bash run.sh https://beispiel.de       # Neubau aus URL
+bash run.sh --alle                    # alles in eingang/ ohne Ergebnis
+```
+
+`run.sh` ruft `claude -p "/homepage-neu <slug> --auto --antworten <datei>"` bzw. `/homepage-verbessern <url> --auto`
+auf, schreibt ein Log nach `ausgang/<slug>/pipeline.log` und stellt am Ende sicher, dass `ausgang/<slug>/` mit
+`ERGEBNIS.md`, `website/`, `quellcode/`, `dokumentation/`, `vorschau/` und ZIP existiert.
+
+Im Automatik-Modus gibt es keine Rückfragen: Lücken werden zu gekennzeichneten Annahmen (Standardwerte in
+`pipeline.config.json`), Gates werden mit der Empfehlung beantwortet, Schleifen haben Limits, jede Entscheidung steht
+mit Alternative in `ERGEBNIS.md`. Ein abgebrochener Lauf wird mit demselben Befehl fortgesetzt (fertige Artefakte
+werden übernommen). `--ab <phase>` rechnet ab einer Phase neu, `--richtung B` wählt eine andere Konzeptrichtung,
+`--deploy`/`--deploy-prod` veröffentlicht nach der QA.
 
 ## Überblick
 
 ```
-MODUS A: neue Website                          MODUS B: bestehende Website (nur URL)
-─────────────────────                          ─────────────────────────────────────
-/fragebogen  (Blöcke A–J, interaktiv)          website-auditor  → 04-audit-bericht
-      │                                        Kurzfragebogen (≤ 8 Fragen)
-      ▼                                                │
-briefing-agent ──────────────────────────────► 01-briefing + briefing.json
-      │                                  ═══ GATE 1: Briefing bestätigen ═══
-      ├──────────────┬───────────────┐
-      ▼              ▼               │   (parallel)
-konkurrenz-analyst   trend-scout     │
-02-konkurrenzanalyse 03-trendreport  │
-      └──────┬───────┘
-             ▼
-      markenstratege ─────────────────► 05-positionierung (3 Richtungen, Signature Idea)
-                                 ═══ GATE 2: Richtung wählen ═══
-             ▼
-      ux-architekt ───────────────────► 06-informationsarchitektur
-             ├──────────────┐           (parallel)
-             ▼              ▼
-          texter       art-director ──► 07-copy-deck, 08-design-system + tokens.css
-             └──────┬───────┘
-                    ▼
-            motion-designer ──────────► 09-motion-konzept
-                    ▼
-            unikat-pruefer (1) ───────► 13-unikat-pruefung-1   ◄── < 80: zurück an Zuständige
-                                 ═══ GATE 3: Design & Motion freigeben ═══
-                    ▼
-          frontend-entwickler ────────► 10-build-spezifikation + Code (projekte/<slug>/build)
-                    ▼
-             qa-reviewer ─────────────► 11-qa-protokoll  ◄──► frontend-entwickler (Fix-Schleife)
-                    ▼
-            unikat-pruefer (2) ───────► 13-unikat-pruefung-2
-                    ▼
-          frontend-entwickler ────────► 12-uebergabe
-                                 ═══ GATE 4: Launch ═══
+EINGANG  eingang/<projekt>.md (Kurzbrief / Fragebogen)          eingang/<projekt>.md mit URL  oder  URL direkt
+                    │                                                        │
+                    │                                              website-auditor → 04-audit-bericht
+                    │                                              Kurzfragebogen (Antworten aus Datei oder ≤ 8 Fragen)
+                    ▼                                                        │
+            briefing-agent ◄─────────────────────────────────────────────────┘
+            01-briefing + briefing.json            ═══ GATE 1: Briefing / Annahmen ═══
+                    ├──────────────┬───────────────┐
+                    ▼              ▼               │   (parallel)
+          konkurrenz-analyst   trend-scout         │
+          02-konkurrenzanalyse 03-trendreport      │
+                    └──────┬───────┘
+                           ▼
+                    markenstratege ────────────────► 05-positionierung (3 Richtungen, Signature Idea)
+                                             ═══ GATE 2: Richtung (Empfehlung / --richtung) ═══
+                           ▼
+                    ux-architekt ──────────────────► 06-informationsarchitektur
+                           ├──────────────┐           (parallel)
+                           ▼              ▼
+                        texter       art-director ──► 07-copy-deck, 08-design-system + tokens.css
+                           └──────┬───────┘
+                                  ▼
+                          motion-designer ─────────► 09-motion-konzept
+                                  ▼
+                          unikat-pruefer (1) ──────► 13-unikat-pruefung-1   ◄── < 80: zurück (max. unikatRunden)
+                                             ═══ GATE 3: Design & Motion ═══
+                                  ▼
+                        frontend-entwickler ───────► 10-build-spezifikation + Code (projekte/<slug>/build)
+                                  ▼
+                           qa-reviewer ────────────► 11-qa-protokoll  ◄──► frontend-entwickler (max. qaRunden)
+                                  ▼
+                          unikat-pruefer (2) ──────► 13-unikat-pruefung-2
+                                  ▼
+                        frontend-entwickler ───────► 12-uebergabe
+                                             ═══ GATE 4: Launch (nie automatisch; --deploy-prod) ═══
+                                  ▼
+                        Orchestrator ──────────────► ERGEBNIS.md, scripts/paketieren.sh
+AUSGANG  ausgang/<slug>/ {ERGEBNIS.md, website/, quellcode/, dokumentation/, vorschau/, <slug>.zip}
 ```
 
-## Phasen im Detail
+## Phasen
 
-| Phase | Agent(en) | Modell | Eingaben | Artefakt | Gate |
-|---|---|---|---|---|---|
-| 0a (nur B) | `website-auditor` | sonnet | URL, `scripts/analyse.sh` | `04-audit-bericht.md`, `analyse/<slug>/` | – |
-| 0b | Skill `/fragebogen` (A) oder Kurzfragebogen (B), dann `briefing-agent` | opus | Antworten, Audit | `01-briefing.md`, `briefing.json` | **1** |
-| 1 | `konkurrenz-analyst` ∥ `trend-scout` | opus | 01 | `02-konkurrenzanalyse.md`, `03-trendreport.md`, `analyse/wettbewerb/` | – |
-| 2 | `markenstratege` | opus | 01, 02, 03 | `05-positionierung.md` | **2** |
-| 3 | `ux-architekt` → (`texter` ∥ `art-director`) → `motion-designer` → `unikat-pruefer` | opus | 01–06 | `06`, `07`, `08` + `design/tokens.css`, `09`, `13-…-1` | **3** |
-| 4 | `frontend-entwickler` | opus | 06–09 | `10-build-spezifikation.md`, `build/` | – |
-| 5 | `qa-reviewer` ⇄ `frontend-entwickler`, `unikat-pruefer`, `frontend-entwickler` | sonnet/opus | Build, 07, 09, Checklisten | `11-qa-protokoll.md`, `13-…-2`, `12-uebergabe.md` | **4** |
+| # | Name (`--bis`/`--ab`) | Agent(en) | Modell | Eingaben | Artefakt | Gate |
+|---|---|---|---|---|---|---|
+| 0a | `audit` (nur URL-Modus) | `website-auditor` | sonnet | URL, `scripts/analyse.sh` | `04-audit-bericht.md`, `analyse/<slug>/` | – |
+| 0b | `briefing` | `/fragebogen` oder Eingabedatei, dann `briefing-agent` | opus | Antworten, Audit, `pipeline.config.json` | `01-briefing.md`, `briefing.json` | **1** |
+| 1 | `analyse` | `konkurrenz-analyst` ∥ `trend-scout` | opus | 01 | `02-konkurrenzanalyse.md`, `03-trendreport.md`, `analyse/wettbewerb/` | – |
+| 2 | `positionierung` | `markenstratege` | opus | 01, 02, 03 | `05-positionierung.md` | **2** |
+| 3 | `konzept` | `ux-architekt` → (`texter` ∥ `art-director`) → `motion-designer` → `unikat-pruefer` | opus | 01–06 | `06`, `07`, `08` + `design/tokens.css`, `09`, `13-…-1` | **3** |
+| 4 | `build` | `frontend-entwickler` | opus | 06–09 | `10-build-spezifikation.md`, `build/`, `analyse/<slug>-build/` | – |
+| 5 | `qa` | `qa-reviewer` ⇄ `frontend-entwickler`, `unikat-pruefer`, `frontend-entwickler` | sonnet/opus | Build, 07, 09, Checklisten | `11-qa-protokoll.md`, `13-…-2`, `12-uebergabe.md`, `analyse/<slug>-qa/` | **4** |
+| 6 | `paket` | Orchestrator, `scripts/paketieren.sh`, optional `scripts/deploy.sh` | – | alles | `ERGEBNIS.md`, `ausgang/<slug>/`, ZIP | – |
 
-Modelle sind Empfehlungen in den Agentendateien (`model:`) und können dort geändert werden (`sonnet` für Tempo,
-`opus` für Urteil). Jeder Agent liest seine Vorlage aus `pipeline/artefakte/` und schreibt genau ein Artefakt nach
-`projekte/<slug>/artefakte/`.
+Modelle stehen in den Agentendateien (`model:`) und können dort geändert werden. Jeder Agent liest seine Vorlage aus
+`pipeline/artefakte/` und schreibt genau ein Artefakt nach `projekte/<slug>/artefakte/`.
 
 ## Die vier Gates
 
-Gates sind Entscheidungspunkte für den Nutzer. Der Orchestrator legt eine Vorlage von höchstens zehn Zeilen vor und
-stellt genau eine Frage (AskUserQuestion). Mit `--auto` werden Gates protokolliert und mit der Empfehlung beantwortet.
-
-| Gate | Frage | Was danach feststeht |
+| Gate | Interaktiv | Automatik |
 |---|---|---|
-| 1 | Stimmt das Briefing, sind die Annahmen richtig, Antworten auf die offenen Fragen? | Ziel, Zielgruppe, Freiheitsgrad, Bewegung/Mut, Funktionen |
-| 2 | Welche der drei Konzeptrichtungen? | Signature Idea, Tonalität, Positionierung |
-| 3 | Design-System und Motion-Konzept freigeben (inkl. Schriftlizenzen)? | Alles, was gebaut wird |
-| 4 | Launch? | Live-Gang ist immer eine Entscheidung des Nutzers |
+| 1 Briefing | Annahmen bestätigen, offene Fragen beantworten (AskUserQuestion, max. vier je Aufruf) | Annahmen übernehmen, protokollieren |
+| 2 Richtung | Eine von drei Konzeptrichtungen wählen | Empfehlung des Markenstrategen oder `--richtung` |
+| 3 Design & Motion | Design-System und Motion-Konzept freigeben (inkl. Schriftlizenzen) | Freigegeben, wenn Unikat-Prüfung ≥ 80 oder Runden erschöpft (dokumentiert) |
+| 4 Launch | Entscheidung des Nutzers | Nie automatisch; `--deploy` erzeugt eine Vorschau, `--deploy-prod` veröffentlicht |
 
 ## Projektordner
 
 ```
 projekte/<slug>/
 ├── briefing.json                 strukturierte Fassung des Briefings (Schema: fragebogen/fragebogen.schema.json)
-├── rohdaten/                     Fragebogen-Antworten, Gesprächsprotokoll, Kundenmaterial
+├── ERGEBNIS.md                   Abschlussbericht (Vorlage 14), wird nach ausgang/ kopiert
+├── rohdaten/                     Eingabedatei, Gesprächsprotokoll, Kundenmaterial
 ├── artefakte/
-│   ├── 00-projektstatus.md       Orchestrator-Log: Phasen, Gates, Entscheidungen, offene Punkte
-│   ├── 01-briefing.md
-│   ├── 02-konkurrenzanalyse.md
-│   ├── 03-trendreport.md
-│   ├── 04-audit-bericht.md       (Modus B)
-│   ├── 05-positionierung.md
-│   ├── 06-informationsarchitektur.md
-│   ├── 07-copy-deck.md
-│   ├── 08-design-system.md
-│   ├── 09-motion-konzept.md
-│   ├── 10-build-spezifikation.md
-│   ├── 11-qa-protokoll.md
-│   ├── 12-uebergabe.md
-│   └── 13-unikat-pruefung-1.md / -2.md
+│   ├── 00-projektstatus.md       Orchestrator-Log: Phasen, Gates, Entscheidungen, Lücken, offene Punkte
+│   ├── 01 … 12                   Briefing bis Übergabe (siehe Tabelle)
+│   ├── 13-unikat-pruefung-1.md / -2.md
+│   └── _alt/<datum>/             durch --ab / --neu verdrängte Artefakte (nicht versioniert)
 ├── design/tokens.css             Design- und Motion-Tokens
 └── build/                        Code (Astro-Projekt)
 
-analyse/<slug>/                   Screenshots, crawl.json, tokens.json, Lighthouse (Ist-Zustand, Modus B)
-analyse/wettbewerb/<wb-slug>/     dasselbe pro Wettbewerber
-analyse/<slug>-qa/                Messungen des Builds
+analyse/<slug>/                   Ist-Zustand (URL-Modus) · analyse/wettbewerb/<wb>/ · analyse/<slug>-build/ · analyse/<slug>-qa/
+ausgang/<slug>/                   Paket: ERGEBNIS.md, website/, quellcode/, dokumentation/, vorschau/, pipeline.log · ausgang/<slug>.zip
 ```
 
-## Qualitätsschleifen
+## Qualitätsschleifen und Limits
 
-- **Unikat-Schleife (Phase 3):** `unikat-pruefer` < 80 → Änderungsliste an `art-director`, `texter`, `motion-designer`;
-  erneute Prüfung; höchstens drei Runden, dann Entscheidung des Nutzers.
-- **QA-Schleife (Phase 5):** `qa-reviewer` findet Blocker/Muss → `frontend-entwickler` behebt → `qa-reviewer` prüft
-  offene Punkte + Lighthouse; höchstens fünf Runden.
-- **Ergebnis-Prüfung:** `unikat-pruefer` (2) am gerenderten Build; < 80 → zurück in die QA-Schleife.
+- **Unikat-Schleife (Phase 3):** `unikat-pruefer` < 80 → Änderungsliste an `art-director`, `texter`,
+  `motion-designer`; erneute Prüfung; Limit `automatik.unikatRunden` (Standard 3).
+- **QA-Schleife (Phase 5):** Blocker/Muss → `frontend-entwickler` → `qa-reviewer` (offene Punkte + Lighthouse); Limit
+  `automatik.qaRunden` (Standard 5). Die Ergebnis-Prüfung des `unikat-pruefer` zählt gegen dasselbe Limit.
+- Nach erschöpftem Limit geht es im Automatik-Modus mit dem besten Stand weiter; die Abweichung steht in `ERGEBNIS.md`.
+  Interaktiv entscheidet der Nutzer.
 
-## Fehler und Lücken
+## Fehler, Lücken, Wiederverwendung
 
-Scheitert ein Skript (Bot-Schutz, kein Chrome, Netzwerk) oder eine Recherche, steht die Lücke im Artefakt und im Status.
-Nichts wird geschätzt oder erfunden. Der Orchestrator entscheidet, ob die Phase mit Lücke weitergeht oder der Nutzer
-gefragt wird. Wiederverwendung: Ein Audit jünger als 7 Tage und eine Konkurrenzanalyse jünger als 30 Tage werden nicht
-neu erstellt, sondern gelesen.
+Scheitert ein Skript (Bot-Schutz, kein Chrome, Netzwerk) oder eine Recherche, steht die Lücke im Artefakt, im Status
+und in `ERGEBNIS.md`. Nichts wird geschätzt oder erfunden. Fertige Artefakte werden bei erneutem Start übernommen;
+ein Audit jünger als 7 Tage und eine Konkurrenzanalyse jünger als 30 Tage gelten auch projektübergreifend als aktuell.
 
-## Headless / automatisiert
-
-Die Pipeline läuft auch ohne interaktive Sitzung, zum Beispiel für einen ersten Entwurf über Nacht:
+## Headless und CI
 
 ```bash
 claude -p "/homepage-verbessern https://beispiel.de --auto --bis konzept" --permission-mode acceptEdits
-claude -p "/audit https://beispiel.de" --output-format json
-claude -p "/konkurrenzanalyse 'Steuerberatung' 'Köln' --mit-trends"
+bash run.sh eingang/projekt.md --voll          # bypassPermissions, für unbeaufsichtigte Läufe
 ```
 
-`--auto` ersetzt Gates durch Empfehlungen und Rückfragen durch markierte Annahmen. Gate 4 (Launch) wird nie automatisch
-passiert; `--bis qa` ist das Maximum im Auto-Modus.
+`.github/workflows/pipeline.yml` führt `run.sh` in GitHub Actions aus (Push nach `eingang/` oder manueller Start);
+das Paket erscheint als Workflow-Artefakt. Benötigt `ANTHROPIC_API_KEY` als Secret, optional Deploy-Secrets.
 
 ## Erweiterung
 
-- Neuer Agent: Datei in `.claude/agents/` mit Frontmatter (`name`, `description`, `tools`, `model`), Vorlage in
+- Neuer Agent: Datei in `.claude/agents/` (Frontmatter `name`, `description`, `tools`, `model`), Vorlage in
   `pipeline/artefakte/`, Aufruf in den Skills ergänzen.
-- Branchen-Spezialisierung: zusätzliche Checkliste in `checklisten/` (z. B. Heilmittelwerbegesetz für Praxen) und
-  Verweis im `briefing-agent`.
-- Anderer Stack: `referenzen/tech-stack.md` erweitern; `frontend-entwickler` begründet die Wahl in der Build-Spezifikation.
-- Eigene Trend-Baseline: `referenzen/trends-baseline-2026.md` fortschreiben (der `trend-scout` verifiziert sie ohnehin).
+- Branchen-Spezialisierung: zusätzliche Checkliste in `checklisten/` und Verweis im `briefing-agent`.
+- Anderer Stack: `referenzen/tech-stack.md` erweitern; `frontend-entwickler` begründet die Wahl.
+- Standardwerte, Limits, Deploy-Ziel: `pipeline.config.json`.
 
-## Kosten und Dauer (Erfahrungswerte, grob)
+## Dauer (Erfahrungswerte, grob)
 
-| Lauf | Dauer | Hinweis |
-|---|---|---|
-| `/audit` | 5–15 min | abhängig von Seitenzahl und Lighthouse |
-| `/konkurrenzanalyse` mit 6 Wettbewerbern | 20–40 min | Crawls und Screenshots dominieren |
-| `/homepage-neu` bis Gate 3 | 1–3 h | plus Antwortzeiten an den Gates |
-| Build + QA | 1–4 h | abhängig von Seitenzahl, Signature-Moments, Fix-Runden |
+| Lauf | Dauer |
+|---|---|
+| `--bis audit` | 5–15 min |
+| `--bis analyse` (6 Wettbewerber) | 30–60 min |
+| `--bis konzept` | 1–3 h |
+| komplett bis Paket | 2–6 h, abhängig von Seitenzahl, Signature-Moments und Fix-Runden |
 
 Die Pipeline ersetzt kein Fotoshooting, keine Rechtsberatung und keine Entscheidung des Kunden. Sie macht alles davor
 und danach schneller, belegter und unverwechselbarer.

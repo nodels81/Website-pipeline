@@ -2,15 +2,23 @@
 node_modules/
 scripts/node_modules/
 
+# Eingaben enthalten Kundendaten, Ausgaben sind Ergebnisse
+eingang/*
+!eingang/README.md
+!eingang/VORLAGE-*.md
+ausgang/*
+!ausgang/.gitkeep
+
 # Analyse-Ausgaben (Screenshots, Crawls, Lighthouse) – groß und projektbezogen
 analyse/*
 !analyse/.gitkeep
 
-# Projekt-Builds
+# Projekt-Builds und verdrängte Artefakte
 projekte/*/build/node_modules/
 projekte/*/build/dist/
 projekte/*/build/.astro/
 projekte/*/build/.next/
+projekte/*/artefakte/_alt/
 
 # System
 .DS_Store

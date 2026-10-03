@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# paketieren.sh — Schnürt das fertige Paket für ein Projekt: ausgang/<slug>/ (website, quellcode, dokumentation,
+# vorschau, ERGEBNIS.md) plus ZIP. Wird am Ende der Pipeline vom Orchestrator aufgerufen, kann aber jederzeit
+# manuell laufen.
+#
+# Nutzung: bash scripts/paketieren.sh <slug>
+set -euo pipefail
+cd "$(dirname "$0")/.."
+SLUG="${1:-}"
+[[ -z "$SLUG" ]] && { echo "Nutzung: bash scripts/paketieren.sh <slug>" >&2; exit 1; }
+[[ "$SLUG" =~ ^[a-z0-9][a-z0-9-]*$ ]] || { echo "Ungültiger Slug: $SLUG" >&2; exit 1; }
+
+PROJ="projekte/${SLUG:?}"
+OUT="ausgang/${SLUG:?}"
+[[ -d "$PROJ" ]] || { echo "Projektordner $PROJ fehlt." >&2; exit 1; }
+
+# Altes Paket entfernen (nur unterhalb von ausgang/)
+[[ -d "$OUT" ]] && find "ausgang/${SLUG:?}" -mindepth 1 -delete
+[[ -f "ausgang/${SLUG:?}.zip" ]] && unlink "ausgang/${SLUG:?}.zip"
+[[ -f "ausgang/${SLUG:?}.tar.gz" ]] && unlink "ausgang/${SLUG:?}.tar.gz"
+mkdir -p "$OUT"
+
+copy_dir () { # $1 Quelle, $2 Ziel, $3.. Ausschlüsse
+  local src="$1" dst="$2"; shift 2
+  [[ -d "$src" ]] || return 0
+  mkdir -p "$dst"
+  if command -v rsync >/dev/null; then
+    local ex=(); for e in "$@"; do ex+=(--exclude "$e"); done
+    rsync -a "${ex[@]}" "$src/" "$dst/"
+  else
+    local tarex=(); for e in "$@"; do tarex+=(--exclude "./$e"); done
+    (cd "$src" && tar -cf - "${tarex[@]}" .) | (cd "$dst" && tar -xf -)
+  fi
+}
+
+echo "══ Paket für $SLUG"
+# 1. Fertige Website (Build-Ausgabe)
+if [[ -d "$PROJ/build/dist" ]]; then copy_dir "$PROJ/build/dist" "$OUT/website"; echo "   ✓ website/ (dist)";
+else echo "   – kein Build vorhanden ($PROJ/build/dist fehlt)"; fi
+
+# 2. Quellcode ohne Abhängigkeiten und Build-Reste
+if [[ -d "$PROJ/build" ]]; then copy_dir "$PROJ/build" "$OUT/quellcode" node_modules dist .astro .git .vercel .netlify; echo "   ✓ quellcode/"; fi
+
+# 3. Dokumentation
+mkdir -p "$OUT/dokumentation"
+if [[ -d "$PROJ/artefakte" ]]; then find "$PROJ/artefakte" -maxdepth 1 -name '*.md' -exec cp {} "$OUT/dokumentation/" \; ; fi
+[[ -f "$PROJ/briefing.json" ]] && cp "$PROJ/briefing.json" "$OUT/dokumentation/"
+[[ -f "$PROJ/design/tokens.css" ]] && cp "$PROJ/design/tokens.css" "$OUT/dokumentation/"
+echo "   ✓ dokumentation/ ($(ls "$OUT/dokumentation" | wc -l) Dateien)"
+
+# 4. Vorschau-Screenshots (QA-Lauf bevorzugt, sonst Build-Selbstprüfung, sonst Ist-Analyse)
+for src in "analyse/$SLUG-qa/screenshots" "analyse/$SLUG-build/screenshots" "analyse/$SLUG/screenshots"; do
+  if [[ -d "$src" ]]; then mkdir -p "$OUT/vorschau"; find "$src" -maxdepth 1 -name '*.png' -exec cp {} "$OUT/vorschau/" \; ; echo "   ✓ vorschau/ (aus $src)"; break; fi
+done
+
+# 5. Ergebnisbericht
+if [[ -f "$PROJ/ERGEBNIS.md" ]]; then cp "$PROJ/ERGEBNIS.md" "$OUT/ERGEBNIS.md"; echo "   ✓ ERGEBNIS.md";
+elif [[ -f "$PROJ/artefakte/14-ergebnis.md" ]]; then cp "$PROJ/artefakte/14-ergebnis.md" "$OUT/ERGEBNIS.md"; echo "   ✓ ERGEBNIS.md (aus 14-ergebnis.md)";
+else echo "   – ERGEBNIS.md fehlt (Orchestrator schreibt sie am Ende der Pipeline)"; fi
+
+# 6. Archiv
+if command -v zip >/dev/null; then (cd ausgang && zip -qr "$SLUG.zip" "$SLUG"); echo "   ✓ ausgang/$SLUG.zip";
+else (cd ausgang && tar -czf "$SLUG.tar.gz" "$SLUG"); echo "   ✓ ausgang/$SLUG.tar.gz (zip nicht installiert)"; fi
+
+echo
+echo "Paket: $OUT"
+du -sh "$OUT" 2>/dev/null | awk '{print "Größe: " $1}'

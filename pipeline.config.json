@@ -1,0 +1,22 @@
+{
+  "standardwerte": {
+    "sprache": "de",
+    "ansprache": "Sie",
+    "bewegung": 3,
+    "mut": 3,
+    "farbschema": "offen",
+    "freiheitsgrad": "weiterentwickeln",
+    "stack": "astro"
+  },
+  "automatik": {
+    "unikatRunden": 3,
+    "qaRunden": 5,
+    "mindestpunkteUnikat": 80,
+    "wettbewerberMin": 5,
+    "maxSeitenCrawl": 20
+  },
+  "deploy": {
+    "ziel": "none",
+    "_hinweis": "netlify | vercel | cloudflare | none. Zugangsdaten nur über Umgebungsvariablen, siehe scripts/deploy.sh."
+  }
+}

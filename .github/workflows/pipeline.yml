@@ -1,0 +1,59 @@
+# Optional: Pipeline in GitHub Actions. Eine Datei nach eingang/ pushen oder den Workflow manuell starten;
+# das Paket erscheint als Workflow-Artefakt "website-paket". Benötigt das Secret ANTHROPIC_API_KEY.
+# Hinweis: Ein Lauf kann Stunden dauern und entsprechend API-Kosten verursachen. In der Entwicklungs-Sandbox ungetestet.
+name: Website-Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      eingabe:
+        description: "Datei in eingang/ (z. B. eingang/meinprojekt.md) oder URL"
+        required: true
+      optionen:
+        description: "Zusätzliche Optionen für run.sh (z. B. --bis konzept)"
+        required: false
+        default: ""
+  push:
+    paths:
+      - "eingang/**"
+      - "!eingang/README.md"
+      - "!eingang/VORLAGE-*.md"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Analyse-Skripte und Browser
+        working-directory: scripts
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Pipeline ausführen
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DEPLOY_ZIEL: ${{ vars.DEPLOY_ZIEL }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_PAGES_PROJECT: ${{ vars.CF_PAGES_PROJECT }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            bash run.sh "${{ github.event.inputs.eingabe }}" --voll ${{ github.event.inputs.optionen }}
+          else
+            bash run.sh --alle --voll
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: website-paket
+          path: ausgang/
+          if-no-files-found: warn
