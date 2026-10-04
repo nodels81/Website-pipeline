@@ -2,6 +2,11 @@
 
 Stand: {{Datum}} · Richtung: {{Name}} · Signature Idea: {{Satz}} · Tokens: `design/tokens.css`
 
+## 0. Kurzfassung (für Folgeagenten)
+<!-- Höchstens 15 Zeilen. Enthält alles, was spätere Phasen brauchen: Entscheidungen, Kernaussagen, Zahlen, offene
+Punkte. Im Sparprofil lesen Folgeagenten oft nur diesen Abschnitt. Fehlt hier etwas Wichtiges, fehlt es später. -->
+- 
+
 ## 1. Designprinzipien (3–5)
 | Prinzip | Heißt konkret | Heißt nicht | Aus Signature Idea weil |
 |---|---|---|---|

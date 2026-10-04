@@ -5,7 +5,9 @@
  * Grundlage für Website-Audit (Bestandsseite) UND Konkurrenzanalyse (Wettbewerber-URLs).
  *
  * Nutzung:
- *   node crawl.mjs <url> [--max 20] [--out ./analyse/<slug>] [--depth 2] [--viewport desktop|mobile]
+ *   node crawl.mjs <url> [--max 20] [--out ./analyse/<slug>] [--depth 2] [--viewport desktop|mobile] [--kompakt]
+ *
+ *   --kompakt: kürzere Textauszüge und Listen in crawl.json/crawl-summary.md (spart Tokens beim Lesen)
  *
  * Ausgabe:
  *   <out>/crawl.json          — Rohdaten aller Seiten
@@ -30,6 +32,7 @@ const maxDepth = Number(args.depth || 2);
 const slug = slugFromUrl(startUrl);
 const outDir = ensureDir(path.resolve(args.out || path.join('analyse', slug)));
 const viewport = args.viewport || 'desktop';
+const kompakt = !!args.kompakt;
 
 const SKIP_EXT = /\.(pdf|jpe?g|png|gif|webp|avif|svg|zip|rar|mp4|mp3|webm|docx?|xlsx?|pptx?|ics|xml|json|css|js)(\?|#|$)/i;
 const SKIP_PATH = /\/(wp-admin|wp-login|cart|checkout|login|logout|account|feed|tag|author)(\/|$)/i;
@@ -268,6 +271,12 @@ try {
         const bytes = res.reduce((a, r) => a + (r.transferSize || 0), 0);
         return nav ? { ttfbMs: Math.round(nav.responseStart), domContentLoadedMs: Math.round(nav.domContentLoadedEventEnd), loadMs: Math.round(nav.loadEventEnd), resources: res.length, transferKB: Math.round(bytes / 1024) } : null;
       });
+      if (kompakt) {
+        data.textExcerpt = data.textExcerpt.slice(0, 300);
+        data.navLinks = data.navLinks.slice(0, 15);
+        data.headings.h3 = data.headings.h3.slice(0, 8);
+        data.palette = data.palette.slice(0, 8);
+      }
       pages.push({ url, finalUrl, depth, status: resp ? resp.status() : null, contentType: resp ? resp.headers()['content-type'] : null, perf, ...data, ms: Date.now() - t0 });
       console.log(`✓ [${pages.length}/${maxPages}] ${url} (${resp?.status()}, ${data.words} Wörter, ${Date.now() - t0} ms)`);
 
@@ -311,6 +320,7 @@ const agg = {
   chatWidget: pages.some((p) => p.layout.chatWidget),
 };
 
+if (kompakt) for (const p of pages) { p.links.internal = p.links.internal.slice(0, 20); }
 const result = { startUrl, origin, slug, crawledAt: new Date().toISOString(), viewport, robotsTxt, sitemap, summary: agg, pages, errors };
 writeJson(path.join(outDir, 'crawl.json'), result);
 
@@ -344,7 +354,7 @@ md.push(`- Strukturierte Daten (JSON-LD): ${agg.jsonLdTypes.join(', ') || 'keine
 md.push(`- robots.txt: ${robotsTxt ? (robotsTxt.startsWith('HTTP') || robotsTxt.startsWith('Fehler') ? robotsTxt : 'vorhanden') : '—'} · sitemap.xml: ${sitemap?.urls != null ? sitemap.urls + ' URLs' : JSON.stringify(sitemap)}`);
 md.push('');
 md.push('## Seiten');
-for (const p of pages) {
+for (const p of (kompakt ? pages.slice(0, 8) : pages)) {
   md.push(`### ${p.url}`);
   md.push(`- Status ${p.status} · ${p.words} Wörter · ${p.perf?.transferKB ?? '?'} KB · Tiefe ${p.depth}`);
   md.push(`- Title: ${p.title || '—'}`);

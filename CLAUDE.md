@@ -27,6 +27,10 @@ Interaktive Einstiege in Claude Code:
 | `/konkurrenzanalyse <branche> <region> [urls…]` | Nur Wettbewerber und Nachfrage analysieren |
 | `/audit <url>` | Nur die technische und gestalterische Ist-Analyse einer URL |
 
+**Sparprofil:** `profil` in `pipeline.config.json` (sparsam, standard, premium) oder `--profil` pro Lauf. Der
+Orchestrator gibt jedem Agenten das Modell aus dem Profil mit, liest selbst nur die Kurzfassungen (Abschnitt 0) der
+Artefakte, und alle Agenten folgen `pipeline/LESEREGELN.md`.
+
 Phasen, Gates und Artefakte: `pipeline/PIPELINE.md`. Phasennamen für `--bis`/`--ab`: `briefing`, `analyse`,
 `positionierung`, `konzept`, `build`, `qa`, `paket` (Modus URL zusätzlich `audit`).
 

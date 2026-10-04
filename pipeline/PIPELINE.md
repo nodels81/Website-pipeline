@@ -112,11 +112,27 @@ ausgang/<slug>/                   Paket: ERGEBNIS.md, website/, quellcode/, doku
 ## Qualitätsschleifen und Limits
 
 - **Unikat-Schleife (Phase 3):** `unikat-pruefer` < 80 → Änderungsliste an `art-director`, `texter`,
-  `motion-designer`; erneute Prüfung; Limit `automatik.unikatRunden` (Standard 3).
+  `motion-designer`; erneute Prüfung; Limit `unikatRunden` aus dem Sparprofil (sparsam 1, standard 2, premium 3).
 - **QA-Schleife (Phase 5):** Blocker/Muss → `frontend-entwickler` → `qa-reviewer` (offene Punkte + Lighthouse); Limit
-  `automatik.qaRunden` (Standard 5). Die Ergebnis-Prüfung des `unikat-pruefer` zählt gegen dasselbe Limit.
+  `qaRunden` aus dem Sparprofil (sparsam 2, standard 3, premium 5). Die Ergebnis-Prüfung des `unikat-pruefer` zählt gegen dasselbe Limit.
 - Nach erschöpftem Limit geht es im Automatik-Modus mit dem besten Stand weiter; die Abweichung steht in `ERGEBNIS.md`.
   Interaktiv entscheidet der Nutzer.
+
+## Sparprofile und Verbrauch
+
+Drei Profile in `pipeline.config.json` steuern den Verbrauch gemeinsam: Modell je Agent, Zahl der Wettbewerber und
+analysierten Seiten, Screenshot-Umfang, Kurzfassungen zwischen Agenten und Rundenlimits. Übersicht:
+`node scripts/profil.mjs <profil>`. Wahl pro Lauf mit `--profil` (Skills, `run.sh`) bzw. `-Profil` (`run.ps1`).
+
+| | sparsam | standard (Voreinstellung) | premium |
+|---|---|---|---|
+| Opus-Agenten | Markenstratege, Art Director | + Texter, Motion, Frontend, Unikat-Prüfer | fast alle |
+| Wettbewerber + Best-in-Class | 3 + 1 | 4 + 1 | 6 + 3 |
+| Screenshots für Agenten | 2 Fold-Bilder je Seite | 2 Fold-Bilder je Seite | 3 Viewports, Fold + Ganzseite, hell und dunkel |
+| Kurzfassungen statt Volltext | ja | ja | nein |
+| Unikat- / QA-Runden | 1 / 2 | 2 / 3 | 3 / 5 |
+
+Die Lese-Regeln zwischen den Agenten stehen in `pipeline/LESEREGELN.md`.
 
 ## Fehler, Lücken, Wiederverwendung
 

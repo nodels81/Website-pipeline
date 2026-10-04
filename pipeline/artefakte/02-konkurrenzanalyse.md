@@ -2,6 +2,11 @@
 
 Stand: {{Datum}} · Direkte Wettbewerber: {{n}} · Best-in-Class: {{m}} · Analyseordner: `analyse/wettbewerb/`
 
+## 0. Kurzfassung (für Folgeagenten)
+<!-- Höchstens 15 Zeilen. Enthält alles, was spätere Phasen brauchen: Entscheidungen, Kernaussagen, Zahlen, offene
+Punkte. Im Sparprofil lesen Folgeagenten oft nur diesen Abschnitt. Fehlt hier etwas Wichtiges, fehlt es später. -->
+- 
+
 ## 1. Wettbewerber-Set
 | # | Name | URL | Typ (direkt/regional/Best-in-Class) | Quelle der Nennung | Gemessen (Crawl/Shots/Tokens/LH) |
 |---|---|---|---|---|---|

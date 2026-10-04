@@ -20,7 +20,7 @@
   Alle Dateien in eingang\, die noch kein Ergebnis haben, ohne Berechtigungsabfragen.
 
 .NOTES
-  Optionen: -Bis <phase> -Ab <phase> -Richtung A|B|C -Deploy -DeployProd -Neu -Voll -Modell <id> -Trocken
+  Optionen: -Profil sparsam|standard|premium -Bis <phase> -Ab <phase> -Richtung A|B|C -Deploy -DeployProd -Neu -Voll -Modell <id> -Trocken
   Phasen: audit, briefing, analyse, positionierung, konzept, build, qa, paket
   Falls PowerShell Skripte blockiert:  powershell -ExecutionPolicy Bypass -File .\run.ps1 eingang\meinprojekt.md
   Claude Code braucht unter Windows Git für Windows (Git Bash); darüber laufen auch die Skripte in scripts\.
@@ -36,6 +36,7 @@ param(
   [switch] $DeployProd,
   [switch] $Neu,
   [switch] $Voll,
+  [ValidateSet('sparsam', 'standard', 'premium')] [string] $Profil,
   [string] $Modell,
   [switch] $Trocken
 )
@@ -100,6 +101,7 @@ function Invoke-Pipeline([string] $eingabe) {
   if ($Richtung) { $prompt += " --richtung $Richtung" }
   if ($DeployProd) { $prompt += ' --deploy-prod' } elseif ($Deploy) { $prompt += ' --deploy' }
   if ($Neu) { $prompt += ' --neu' }
+  if ($Profil) { $prompt += " --profil $Profil" }
 
   $claudeArgs = @('-p', $prompt)
   if ($Voll) { $claudeArgs += @('--permission-mode', 'bypassPermissions') } else { $claudeArgs += @('--permission-mode', 'acceptEdits') }

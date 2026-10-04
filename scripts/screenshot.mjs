@@ -6,6 +6,10 @@
  * Nutzung:
  *   node screenshot.mjs <url> [--out ./analyse/<slug>] [--viewports desktop,tablet,mobile]
  *                             [--sizes 320x568,1920x1080] [--dark] [--reduced-motion] [--no-cookie-dismiss]
+ *                             [--fold-only] [--dpr 1]
+ *
+ * Sparsam für Agenten: --fold-only (keine Ganzseiten-Bilder) und --dpr 1 (einfache Auflösung) reduzieren die
+ * Bildgröße und damit den Token-Verbrauch, wenn Agenten die Screenshots ansehen.
  *
  * Ausgabe:
  *   <out>/screenshots/<viewport>[-dark][-rm]-fold.png, …-full.png, manifest.json
@@ -39,6 +43,8 @@ for (const s of String(args.sizes || '').split(',').map((x) => x.trim()).filter(
 if (!targets.length) { console.error('Keine gültigen Viewports.'); process.exit(1); }
 
 const schemes = args.dark ? ['light', 'dark'] : ['light'];
+const foldOnly = !!args['fold-only'];
+const dpr = args.dpr ? Number(args.dpr) : null;
 const motions = args['reduced-motion'] ? ['no-preference', 'reduce'] : ['no-preference'];
 
 const browser = await launchBrowser(url);
@@ -50,6 +56,7 @@ try {
       for (const t of targets) {
         const opts = { colorScheme: scheme, reducedMotion: motion };
         if (t.width) opts.viewport = { width: t.width, height: t.height };
+        if (dpr) opts.deviceScaleFactor = dpr;
         const ctx = await newContext(browser, t.preset, opts);
         const page = await ctx.newPage();
         const t0 = Date.now();
@@ -67,12 +74,15 @@ try {
 
           await autoScroll(page);
           await page.waitForTimeout(500);
-          const fullFile = path.join(shotDir, `${t.name}${suffix}-full.png`);
-          await page.screenshot({ path: fullFile, fullPage: true });
+          let fullFile = null;
+          if (!foldOnly) {
+            fullFile = path.join(shotDir, `${t.name}${suffix}-full.png`);
+            await page.screenshot({ path: fullFile, fullPage: true });
+          }
 
           const pageHeight = await page.evaluate(() => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
           const hasHorizontalScroll = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
-          manifest.shots.push({ viewport: t.name, width: t.width || VIEWPORTS[t.preset].width, scheme, reducedMotion: motion === 'reduce', status, fold: path.relative(outDir, foldFile), full: path.relative(outDir, fullFile), pageHeight, hasHorizontalScroll, ms: Date.now() - t0 });
+          manifest.shots.push({ viewport: t.name, width: t.width || VIEWPORTS[t.preset].width, scheme, reducedMotion: motion === 'reduce', status, fold: path.relative(outDir, foldFile), full: fullFile ? path.relative(outDir, fullFile) : null, pageHeight, hasHorizontalScroll, ms: Date.now() - t0 });
           console.log(`✓ ${t.name}${suffix}: ${status} (${pageHeight}px hoch${hasHorizontalScroll ? ', HORIZONTALES SCROLLEN!' : ''}, ${Date.now() - t0} ms)`);
         } catch (err) {
           manifest.shots.push({ viewport: t.name, scheme, reducedMotion: motion === 'reduce', status, error: String(err.message || err) });

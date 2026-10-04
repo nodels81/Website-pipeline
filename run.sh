@@ -15,7 +15,8 @@
 #   --deploy-prod    nach QA in Produktion veröffentlichen
 #   --neu            vorhandene Artefakte des Projekts ignorieren, alles neu erzeugen
 #   --voll           Claude ohne Berechtigungsabfragen laufen lassen (für CI / unbeaufsichtigt)
-#   --modell <id>    Modell der Hauptsession (Subagenten behalten ihre Einstellung in .claude/agents)
+#   --profil <name>  Sparprofil: sparsam | standard | premium (Standard aus pipeline.config.json)
+#   --modell <id>    Modell der Hauptsession (Subagenten bekommen ihr Modell aus dem Profil)
 #   --trocken        nur anzeigen, was ausgeführt würde
 #
 # Ergebnis: ausgang/<slug>/ERGEBNIS.md, website/, quellcode/, dokumentation/, vorschau/, <slug>.zip
@@ -24,10 +25,10 @@ set -euo pipefail
 cd "$(dirname "$0")"
 ROOT="$(pwd)"
 
-usage () { sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
+usage () { sed -n '2,23p' "$0" | sed 's/^# \{0,1\}//'; exit "${1:-0}"; }
 [[ $# -eq 0 ]] && usage 1
 
-EINGABE=""; ALLE=0; BIS=""; AB=""; RICHTUNG=""; DEPLOY=""; NEU=0; VOLL=0; MODELL=""; TROCKEN=0
+PROFIL=""; EINGABE=""; ALLE=0; BIS=""; AB=""; RICHTUNG=""; DEPLOY=""; NEU=0; VOLL=0; MODELL=""; TROCKEN=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --alle) ALLE=1; shift;;
@@ -39,6 +40,7 @@ while [[ $# -gt 0 ]]; do
     --neu) NEU=1; shift;;
     --voll) VOLL=1; shift;;
     --modell|--model) MODELL="$2"; shift 2;;
+    --profil) PROFIL="$2"; shift 2;;
     --trocken|--dry-run) TROCKEN=1; shift;;
     -h|--help) usage 0;;
     --*) echo "Unbekannte Option: $1" >&2; usage 1;;
@@ -79,6 +81,7 @@ run_one () {
   [[ -n "$RICHTUNG" ]] && prompt="$prompt --richtung $RICHTUNG"
   [[ -n "$DEPLOY" ]] && prompt="$prompt $DEPLOY"
   [[ "$NEU" == 1 ]] && prompt="$prompt --neu"
+  [[ -n "$PROFIL" ]] && prompt="$prompt --profil $PROFIL"
 
   local args=(-p "$prompt")
   if [[ "$VOLL" == 1 ]]; then args+=(--permission-mode bypassPermissions); else args+=(--permission-mode acceptEdits); fi

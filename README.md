@@ -59,6 +59,21 @@ Voraussetzung unter Windows ist **Git für Windows** (bringt Git Bash mit); Clau
 Analyse-Skripte laufen darüber. `run.ps1` wurde in der Entwicklungs-Sandbox nicht ausgeführt (kein PowerShell dort);
 bei Problemen bitte die Meldung aus `ausgang\<projekt>\pipeline.log` prüfen.
 
+## Verbrauch steuern: Sparprofile
+
+Drei Profile regeln Modellwahl, Analyseumfang, Screenshots, Kurzfassungen zwischen den Agenten und Nachbesserungsrunden.
+Voreinstellung ist `standard`. Wechseln pro Lauf:
+
+```bash
+bash run.sh eingang/meinprojekt.md --profil sparsam      # Probeläufe, kleine Websites
+.\run.ps1 eingang\meinprojekt.md -Profil premium          # Leuchtturmprojekte
+/homepage-neu meinprojekt --profil sparsam               # im Claude-Code-Chat
+node scripts/profil.mjs sparsam                          # zeigt, was ein Profil bedeutet
+```
+
+Dauerhaft ändern: `"profil"` in `pipeline.config.json`. Zusätzlich hilft: pro Projekt eine neue Claude-Sitzung,
+`/clear` zwischen Aufgaben, und in Etappen arbeiten (`--bis konzept`, dann weiter).
+
 ## Interaktiv in Claude Code
 
 | Befehl | Was passiert |
@@ -77,7 +92,7 @@ Ohne Claude Code: `prompts/MASTER-PROMPT.md` ist ein eigenständiger Prompt mit 
 run.sh / run.ps1       Vollautomatik: eine Eingabe, ein Paket (Bash / PowerShell)
 eingang/               Vorlagen für Kurzbrief und URL-Eingabe; eigene Dateien werden nicht versioniert
 ausgang/               Ergebnisse (nicht versioniert)
-pipeline.config.json   Standardwerte für fehlende Angaben, Rundenlimits, Deploy-Ziel
+pipeline.config.json   Sparprofile (sparsam/standard/premium), Standardwerte für fehlende Angaben, Deploy-Ziel
 .claude/agents/        12 Subagenten (je ein Spezialist mit eigenem Prompt, Werkzeugen, Modell)
 .claude/skills/        5 Skills, die die Agenten orchestrieren
 .claude/settings.json  Freigaben für Recherche, Skripte, npm
@@ -134,7 +149,7 @@ Floskeln, keine Animation ohne Funktion.
 
 ## Anpassen
 
-- Standardwerte, Rundenlimits und Deploy-Ziel in `pipeline.config.json`.
+- Sparprofil, Standardwerte und Deploy-Ziel in `pipeline.config.json`.
 - Modelle je Agent in `.claude/agents/*.md` (`model: opus|sonnet|haiku`).
 - Eigene Branchen-Checklisten in `checklisten/`, eigener Stack in `referenzen/tech-stack.md`.
 - Trend-Baseline fortschreiben in `referenzen/trends-baseline-2026.md`.

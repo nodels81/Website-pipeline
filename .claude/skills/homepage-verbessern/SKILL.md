@@ -1,7 +1,7 @@
 ---
 name: homepage-verbessern
 description: Bestehende Website nur anhand ihrer URL analysieren (Inhalt, UX, Gestaltung, Technik, SEO, Barrierefreiheit, Einheitsbrei-Grad), Briefing daraus ableiten, höchstens acht Rückfragen stellen und dann die komplette Premium-Pipeline als Neubau durchlaufen – die alte Seite wird nur analysiert, nie kopiert. Einsetzen, wenn eine vorhandene Homepage komplett neu gemacht werden soll und eine URL vorliegt; mit --auto ohne Rückfragen.
-argument-hint: "<url> [--auto] [--antworten <datei>] [--slug <slug>] [--bis <phase>] [--ab <phase>] [--richtung A|B|C] [--deploy|--deploy-prod] [--nur-audit] [--neu]"
+argument-hint: "<url> [--profil sparsam|standard|premium] [--auto] [--antworten <datei>] [--slug <slug>] [--bis <phase>] [--ab <phase>] [--richtung A|B|C] [--deploy|--deploy-prod] [--nur-audit] [--neu]"
 disable-model-invocation: false
 ---
 
@@ -17,7 +17,8 @@ Argumente: `$ARGUMENTS`
 
 ## Optionen
 
-Wie in `/homepage-neu` (`--auto`, `--bis`, `--ab`, `--richtung`, `--deploy`, `--deploy-prod`, `--neu`), zusätzlich:
+Wie in `/homepage-neu` (`--profil`, `--auto`, `--bis`, `--ab`, `--richtung`, `--deploy`, `--deploy-prod`, `--neu`), zusätzlich.
+Der Abschnitt „Sparprofil“ aus `/homepage-neu` gilt hier genauso (Modell je Agent, Lese-Regeln, Grenzen aus dem Profil):
 
 | Option | Wirkung |
 |---|---|
@@ -32,7 +33,7 @@ Phasenname ↔ Nummer: `audit` 0a · `briefing` 0b · `analyse` 1 · `positionie
 ## Vollautomatik (`--auto`), Fortsetzen, Neuberechnen
 
 Dieselben Regeln wie in `/homepage-neu` (keine AskUserQuestion, Gates mit Empfehlung, Rundenlimits aus
-`pipeline.config.json`, Phase 6 immer, Fortsetzen anhand vorhandener Artefakte, `--ab`/`--neu` verschieben nach
+dem Sparprofil, Phase 6 immer, Fortsetzen anhand vorhandener Artefakte, `--ab`/`--neu` verschieben nach
 `_alt/`). Rückfragen des Kurzfragebogens werden im Automatik-Modus aus `--antworten` gelesen; fehlende Antworten
 ersetzt der `briefing-agent` durch begründete Annahmen aus dem Audit und den Standardwerten.
 
@@ -45,7 +46,7 @@ ersetzt der `briefing-agent` durch begründete Annahmen aus dem Audit und den St
 
 ## Phase 0a: Ist-Analyse
 
-- Agent `website-auditor` mit URL und Projektordner starten (`scripts/analyse.sh`, Ausgabe `analyse/<slug>/`) →
+- Agent `website-auditor` mit URL, Projektordner und Profil starten (`scripts/analyse.sh --profil <profil>`, Ausgabe `analyse/<slug>/`) →
   `artefakte/04-audit-bericht.md` inklusive „Abgeleitetes Briefing-Material“ und „Was bleibt“.
 - Kurzfassung in den Status. Bei `--bis audit` / `--nur-audit`: Phase 6 ausführen (Paket enthält dann nur Audit) und
   enden.

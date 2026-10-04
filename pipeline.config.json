@@ -1,4 +1,46 @@
 {
+  "profil": "standard",
+  "_profilHinweis": "sparsam | standard | premium. Überschreibbar pro Lauf mit --profil <name> (run.sh, run.ps1 -Profil, Skills).",
+
+  "profile": {
+    "sparsam": {
+      "beschreibung": "Geringster Verbrauch. Gut für Probeläufe, kleine Websites und erste Konzeptentwürfe.",
+      "modelle": {
+        "briefing-agent": "sonnet", "website-auditor": "sonnet", "konkurrenz-analyst": "sonnet", "trend-scout": "sonnet",
+        "markenstratege": "opus", "ux-architekt": "sonnet", "texter": "sonnet", "art-director": "opus",
+        "motion-designer": "sonnet", "frontend-entwickler": "sonnet", "qa-reviewer": "sonnet", "unikat-pruefer": "sonnet"
+      },
+      "wettbewerber": 3, "bestInClass": 1, "seitenJeWettbewerber": 3, "lighthouseWettbewerber": 0,
+      "maxSeitenCrawl": 10, "screenshots": "fold", "dunkelmodusScreenshots": false,
+      "qaViewports": "390x844,1440x900", "kurzfassungen": true,
+      "unikatRunden": 1, "qaRunden": 2, "trendQuellenMin": 6
+    },
+    "standard": {
+      "beschreibung": "Ausgewogen. Opus nur dort, wo Urteil und Gestaltung entscheiden.",
+      "modelle": {
+        "briefing-agent": "sonnet", "website-auditor": "sonnet", "konkurrenz-analyst": "sonnet", "trend-scout": "sonnet",
+        "markenstratege": "opus", "ux-architekt": "sonnet", "texter": "opus", "art-director": "opus",
+        "motion-designer": "opus", "frontend-entwickler": "opus", "qa-reviewer": "sonnet", "unikat-pruefer": "opus"
+      },
+      "wettbewerber": 4, "bestInClass": 1, "seitenJeWettbewerber": 4, "lighthouseWettbewerber": 1,
+      "maxSeitenCrawl": 15, "screenshots": "fold", "dunkelmodusScreenshots": false,
+      "qaViewports": "320x568,390x844,1024x768,1440x900", "kurzfassungen": true,
+      "unikatRunden": 2, "qaRunden": 3, "trendQuellenMin": 10
+    },
+    "premium": {
+      "beschreibung": "Maximale Tiefe. Für Leuchtturmprojekte; höchster Verbrauch.",
+      "modelle": {
+        "briefing-agent": "opus", "website-auditor": "sonnet", "konkurrenz-analyst": "opus", "trend-scout": "opus",
+        "markenstratege": "opus", "ux-architekt": "opus", "texter": "opus", "art-director": "opus",
+        "motion-designer": "opus", "frontend-entwickler": "opus", "qa-reviewer": "sonnet", "unikat-pruefer": "opus"
+      },
+      "wettbewerber": 6, "bestInClass": 3, "seitenJeWettbewerber": 6, "lighthouseWettbewerber": 3,
+      "maxSeitenCrawl": 20, "screenshots": "fold+full", "dunkelmodusScreenshots": true,
+      "qaViewports": "320x568,390x844,768x1024,1024x768,1440x900,1920x1080", "kurzfassungen": false,
+      "unikatRunden": 3, "qaRunden": 5, "trendQuellenMin": 15
+    }
+  },
+
   "standardwerte": {
     "sprache": "de",
     "ansprache": "Sie",
@@ -9,11 +51,7 @@
     "stack": "astro"
   },
   "automatik": {
-    "unikatRunden": 3,
-    "qaRunden": 5,
-    "mindestpunkteUnikat": 80,
-    "wettbewerberMin": 5,
-    "maxSeitenCrawl": 20
+    "mindestpunkteUnikat": 80
   },
   "deploy": {
     "ziel": "none",

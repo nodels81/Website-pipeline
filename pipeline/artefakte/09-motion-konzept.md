@@ -2,6 +2,11 @@
 
 Stand: {{Datum}} · Bewegungsintensität (Briefing): {{1–5}} · Richtung: {{Name}} · Signature Idea: {{Satz}}
 
+## 0. Kurzfassung (für Folgeagenten)
+<!-- Höchstens 15 Zeilen. Enthält alles, was spätere Phasen brauchen: Entscheidungen, Kernaussagen, Zahlen, offene
+Punkte. Im Sparprofil lesen Folgeagenten oft nur diesen Abschnitt. Fehlt hier etwas Wichtiges, fehlt es später. -->
+- 
+
 ## 1. Bewegungscharakter (3 Sätze)
 - Tempo · Gewicht · Easing-Familie · Räumlichkeit · Verhältnis Scroll-gesteuert / zeitgesteuert:
 

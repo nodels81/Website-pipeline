@@ -1,13 +1,18 @@
 ---
 name: audit
 description: Technische und gestalterische Ist-Analyse einer Website per URL (Screenshots in drei Viewports, Crawl, Design-Tokens, Lighthouse, acht Bewertungsdimensionen, Einheitsbrei-Index, priorisierte Maßnahmen) als Audit-Bericht. Einsetzen, wenn eine Website bewertet werden soll, ohne gleich ein Redesign zu starten.
-argument-hint: "<url> [--max-pages 20] [--skip-lighthouse]"
+argument-hint: "<url> [--max-pages 20] [--skip-lighthouse] [--profil sparsam|standard|premium]"
 disable-model-invocation: false
 ---
 
 # /audit – Website-Audit
 
 Argumente: `$ARGUMENTS`
+
+## Sparprofil
+
+Profil aus `--profil` oder `pipeline.config.json`; Werte mit `node scripts/profil.mjs --json <profil>`. Beim Start
+der Agenten das Modell aus `modelle.<agent>` als `model`-Parameter mitgeben und das Profil im Auftrag nennen.
 
 ## Ablauf
 

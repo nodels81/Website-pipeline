@@ -1,7 +1,7 @@
 ---
 name: homepage-neu
 description: Komplette Agenten-Pipeline für eine neue Premium-Website – vom Fragebogen oder Kurzbrief über Konkurrenz- und Trendanalyse, Positionierung, Architektur, Text, Design-System und Motion-Konzept bis zu Build, QA und fertigem Paket. Einsetzen, wenn eine neue Homepage, Website oder Landingpage für ein Unternehmen entstehen soll; mit --auto läuft alles ohne Rückfragen durch.
-argument-hint: "<projektname> [--auto] [--antworten <datei>] [--bis <phase>] [--ab <phase>] [--richtung A|B|C] [--deploy|--deploy-prod] [--neu]"
+argument-hint: "<projektname> [--profil sparsam|standard|premium] [--auto] [--antworten <datei>] [--bis <phase>] [--ab <phase>] [--richtung A|B|C] [--deploy|--deploy-prod] [--neu]"
 disable-model-invocation: false
 ---
 
@@ -10,7 +10,7 @@ disable-model-invocation: false
 Du bist der **Orchestrator**. Du koordinierst die Subagenten in `.claude/agents/`, führst die Gates durch und hältst
 den Projektstatus aktuell. Fachliche Arbeit delegierst du; du selbst schreibst nur Status, Zusammenfassungen,
 Entscheidungsvorlagen und am Ende `ERGEBNIS.md`. Grundregeln: `CLAUDE.md`. Phasen: `pipeline/PIPELINE.md`.
-Standardwerte und Rundenlimits: `pipeline.config.json`.
+Standardwerte und Sparprofile: `pipeline.config.json`. Lese-Regeln zwischen Agenten: `pipeline/LESEREGELN.md`.
 
 Argumente: `$ARGUMENTS`
 
@@ -26,6 +26,18 @@ Argumente: `$ARGUMENTS`
 | `--richtung A|B|C` | Konzeptrichtung an Gate 2 vorgeben statt Empfehlung |
 | `--deploy` / `--deploy-prod` | Nach QA `scripts/deploy.sh <slug>` (Vorschau) bzw. `--prod` ausführen |
 | `--neu` | Alle vorhandenen Artefakte ignorieren (nach `_alt/` verschieben) und neu erzeugen |
+| `--profil <name>` | Sparprofil `sparsam`, `standard` oder `premium` (Standard: `profil` in `pipeline.config.json`) |
+
+## Sparprofil (gilt für jeden Lauf)
+
+1. Zu Beginn `node scripts/profil.mjs --json <profil>` ausführen und die Werte im Status festhalten.
+2. **Modell je Agent:** Beim Start jedes Subagenten den Parameter `model` des Agent-Werkzeugs auf
+   `modelle.<agent>` aus dem Profil setzen. Das überschreibt die Voreinstellung in der Agentendatei.
+3. **Auftrag:** Jeder Agent-Auftrag nennt das Profil und die für ihn relevanten Werte (z. B. `wettbewerber`,
+   `seitenJeWettbewerber`, `screenshots`, `qaViewports`) und verweist auf `pipeline/LESEREGELN.md`.
+4. **Grenzen:** `unikatRunden` und `qaRunden` kommen aus dem Profil.
+5. **Orchestrator selbst:** liest von Artefakten nur Abschnitt 0 (Kurzfassung) und die Rückmeldung der Agenten, nie
+   ganze Artefakte. Für `ERGEBNIS.md` gezielt die benötigten Abschnitte.
 
 Phasenname ↔ Nummer: `briefing` 0 · `analyse` 1 · `positionierung` 2 · `konzept` 3 (IA, Copy, Design, Motion, Unikat) ·
 `build` 4 · `qa` 5 · `paket` 6. `design` ist ein Alias für `konzept`.
@@ -41,7 +53,7 @@ Vorne Eingabe rein, hinten fertige Website raus. Im Automatik-Modus gilt zusätz
    Runden erschöpft sind. Gate 4 (Launch) wird nie automatisch passiert; `--deploy-prod` ist die ausdrückliche
    Anweisung des Nutzers und zählt als Freigabe.
 3. **Schleifen:** Unikat-Schleife höchstens `unikatRunden`, QA-Schleife höchstens `qaRunden` (aus
-   `pipeline.config.json`). Danach geht es mit dem besten erreichten Stand weiter; die Abweichung vom Ziel steht in
+   dem Profil). Danach geht es mit dem besten erreichten Stand weiter; die Abweichung vom Ziel steht in
    `ERGEBNIS.md` unter „Stand“ und „Offene Punkte“.
 4. **Fehler:** Scheitert ein Skript oder eine Recherche, wird die Phase mit benannter Lücke fortgesetzt. Abgebrochen
    wird nur, wenn kein Briefing möglich ist (keine Eingabe) oder der Build nach den QA-Runden nicht lauffähig ist.
@@ -62,7 +74,7 @@ Vorne Eingabe rein, hinten fertige Website raus. Im Automatik-Modus gilt zusätz
 
 1. Projektname und Optionen lesen. Ordner anlegen: `projekte/<slug>/{rohdaten,artefakte,design,build}`.
    `pipeline/artefakte/00-projektstatus.md` nach `projekte/<slug>/artefakte/00-projektstatus.md` kopieren und Kopf
-   ausfüllen (Projekt, Modus „neu“, Datum, Optionen, Automatik ja/nein).
+   ausfüllen (Projekt, Modus „neu“, Datum, Optionen, Automatik ja/nein, Profil).
 2. Falls `scripts/node_modules` fehlt: `cd scripts && npm install` (einmalig).
 3. Nach **jeder** Phase: Statusdatei aktualisieren (Phase, Agent, Artefakt, Ergebnis-Kurzfassung, Gate-Entscheidung,
    offene Punkte, Lücken, Zeitstempel).

@@ -2,6 +2,11 @@
 
 Stand der Recherche: {{Datum}} · Quellen: {{n}}
 
+## 0. Kurzfassung (für Folgeagenten)
+<!-- Höchstens 15 Zeilen. Enthält alles, was spätere Phasen brauchen: Entscheidungen, Kernaussagen, Zahlen, offene
+Punkte. Im Sparprofil lesen Folgeagenten oft nur diesen Abschnitt. Fehlt hier etwas Wichtiges, fehlt es später. -->
+- 
+
 ## 1. Nutzerbedarf: Was Menschen fragen und erwarten
 ### 1.1 Top-Fragen (≥ 10)
 | # | Frage (Nutzerformulierung) | Quelle | Beantwortet auf Seite / Section |

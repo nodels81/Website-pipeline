@@ -2,6 +2,11 @@
 
 Stand: {{Datum}} · Ansprache: Sie/Du · Tonalität: {{3 Adjektive}} · Texte: {{n}} · `[Beweis fehlt]`: {{k}} · Floskel-Treffer: 0
 
+## 0. Kurzfassung (für Folgeagenten)
+<!-- Höchstens 15 Zeilen. Enthält alles, was spätere Phasen brauchen: Entscheidungen, Kernaussagen, Zahlen, offene
+Punkte. Im Sparprofil lesen Folgeagenten oft nur diesen Abschnitt. Fehlt hier etwas Wichtiges, fehlt es später. -->
+- 
+
 ## 0. Sprachregeln
 - Tonalität mit drei Beispielsätzen:
 - Wortfeld benutzen / vermeiden:

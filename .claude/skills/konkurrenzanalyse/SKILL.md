@@ -1,13 +1,18 @@
 ---
 name: konkurrenzanalyse
 description: Eigenständige Wettbewerbs- und Nachfrageanalyse für eine Branche und Region (optional mit konkreten Wettbewerber-URLs) – Vergleichsmatrix, Einheitsbrei-Landkarte, Lücken, Benchmarks und auf Wunsch Trendreport. Einsetzen, wenn jemand wissen will, wie die Konkurrenz im Web aufgestellt ist und was gerade gefragt ist, ohne gleich eine ganze Website zu bauen.
-argument-hint: "<branche> <region> [url ...] [--mit-trends] [--projekt <slug>]"
+argument-hint: "<branche> <region> [url ...] [--mit-trends] [--projekt <slug>] [--profil sparsam|standard|premium]"
 disable-model-invocation: false
 ---
 
 # /konkurrenzanalyse – Wettbewerb und Nachfrage
 
 Argumente: `$ARGUMENTS`
+
+## Sparprofil
+
+Profil aus `--profil` oder `pipeline.config.json`; Werte mit `node scripts/profil.mjs --json <profil>`. Beim Start
+der Agenten das Modell aus `modelle.<agent>` als `model`-Parameter mitgeben und das Profil im Auftrag nennen.
 
 ## Ablauf
 

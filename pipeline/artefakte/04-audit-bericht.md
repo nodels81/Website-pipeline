@@ -2,7 +2,7 @@
 
 Stand: {{Datum}} · Seiten gecrawlt: {{n}} · Analyseordner: `analyse/<slug>/` · Gesamtnote: {{x}}/5 · Einheitsbrei-Index: {{y}} %
 
-## 0. Zusammenfassung (12 Zeilen)
+## 0. Kurzfassung (für Folgeagenten, höchstens 15 Zeilen)
 - Gesamtnote, Einheitsbrei-Index
 - Drei schwerste Probleme
 - Drei wichtigste Stärken

@@ -4,6 +4,11 @@ Stand: {{Datum}} · Modus: neu / verbessern · Quelle: Fragebogen / Gespräch / 
 
 > Alles ohne Kennzeichnung stammt vom Kunden. `[Annahme]` = abgeleitet, zu bestätigen. `[offen]` = Frage an den Kunden.
 
+## 0. Kurzfassung (für Folgeagenten)
+<!-- Höchstens 15 Zeilen. Enthält alles, was spätere Phasen brauchen: Entscheidungen, Kernaussagen, Zahlen, offene
+Punkte. Im Sparprofil lesen Folgeagenten oft nur diesen Abschnitt. Fehlt hier etwas Wichtiges, fehlt es später. -->
+- 
+
 ## 1. Unternehmen
 - **Name, Leistung in einem Satz:**
 - **Branche, Region, Einzugsgebiet:**
