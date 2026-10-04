@@ -59,8 +59,17 @@ elif [[ -f "$PROJ/artefakte/14-ergebnis.md" ]]; then cp "$PROJ/artefakte/14-erge
 else echo "   – ERGEBNIS.md fehlt (Orchestrator schreibt sie am Ende der Pipeline)"; fi
 
 # 6. Archiv
-if command -v zip >/dev/null; then (cd ausgang && zip -qr "$SLUG.zip" "$SLUG"); echo "   ✓ ausgang/$SLUG.zip";
-else (cd ausgang && tar -czf "$SLUG.tar.gz" "$SLUG"); echo "   ✓ ausgang/$SLUG.tar.gz (zip nicht installiert)"; fi
+# ZIP: zip (Linux/macOS) > PowerShell (Windows/Git Bash) > Python > tar.gz als letzte Möglichkeit
+if command -v zip >/dev/null; then
+  (cd ausgang && zip -qr "$SLUG.zip" "$SLUG"); echo "   ✓ ausgang/$SLUG.zip"
+elif PS=$(command -v powershell.exe || command -v pwsh); then
+  (cd ausgang && "$PS" -NoProfile -NonInteractive -Command "Compress-Archive -Path '$SLUG' -DestinationPath '$SLUG.zip' -Force") \
+    && echo "   ✓ ausgang/$SLUG.zip (PowerShell)"
+elif PY=$(command -v python3 || command -v python); then
+  (cd ausgang && "$PY" -m zipfile -c "$SLUG.zip" "$SLUG") && echo "   ✓ ausgang/$SLUG.zip (Python)"
+else
+  (cd ausgang && tar -czf "$SLUG.tar.gz" "$SLUG"); echo "   ✓ ausgang/$SLUG.tar.gz (kein ZIP-Werkzeug gefunden)"
+fi
 
 echo
 echo "Paket: $OUT"

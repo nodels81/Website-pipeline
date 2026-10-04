@@ -13,7 +13,11 @@ ausgang/*
 analyse/*
 !analyse/.gitkeep
 
-# Projekt-Builds und verdrängte Artefakte
+# Projekte enthalten Kundendaten und sind lokale Arbeitsstände (Sicherung: ausgang/<slug>.zip)
+projekte/*
+!projekte/.gitkeep
+
+# Projekt-Builds und verdrängte Artefakte (falls projekte/ doch versioniert wird)
 projekte/*/build/node_modules/
 projekte/*/build/dist/
 projekte/*/build/.astro/
