@@ -58,6 +58,21 @@ if [[ -f "$PROJ/ERGEBNIS.md" ]]; then cp "$PROJ/ERGEBNIS.md" "$OUT/ERGEBNIS.md";
 elif [[ -f "$PROJ/artefakte/14-ergebnis.md" ]]; then cp "$PROJ/artefakte/14-ergebnis.md" "$OUT/ERGEBNIS.md"; echo "   ✓ ERGEBNIS.md (aus 14-ergebnis.md)";
 else echo "   – ERGEBNIS.md fehlt (Orchestrator schreibt sie am Ende der Pipeline)"; fi
 
+# 5b. Starter zum Ansehen (Doppelklick unter Windows, bash unter macOS/Linux)
+if [[ -d "$OUT/website" ]]; then
+  printf '%s\r\n' '@echo off' \
+    'rem Doppelklick: startet einen lokalen Webserver fuer diese Website und oeffnet den Browser.' \
+    'rem Voraussetzung: Node.js (https://nodejs.org). Beenden: dieses Fenster schliessen.' \
+    'cd /d "%~dp0"' \
+    'start "" cmd /c "timeout /t 4 >nul & start http://localhost:4321"' \
+    'npx --yes serve website -l 4321' > "$OUT/Website-ansehen.cmd"
+  printf '%s\n' '#!/usr/bin/env bash' 'cd "$(dirname "$0")"' \
+    '( sleep 3; (open http://localhost:4321 || xdg-open http://localhost:4321) >/dev/null 2>&1 ) &' \
+    'exec npx --yes serve website -l 4321' > "$OUT/website-ansehen.sh"
+  chmod +x "$OUT/website-ansehen.sh"
+  echo "   ✓ Website-ansehen.cmd / website-ansehen.sh"
+fi
+
 # 6. Archiv
 # ZIP: zip (Linux/macOS) > PowerShell (Windows/Git Bash) > Python > tar.gz als letzte Möglichkeit
 if command -v zip >/dev/null; then
