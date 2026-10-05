@@ -74,6 +74,10 @@ Preview-Befehl.
 
 ## Regeln
 
+- Bilder aus dem Bildplan (08) kommen aus `projekte/<slug>/assets/bestand/` bzw. `assets/kunde/` nach `src/assets/` und
+  werden über `astro:assets` optimiert. Fehlende Motive als gekennzeichneter Platzhalter im richtigen Format
+  („Foto von … folgt“), nie als abstrakte Fläche.
+
 - Keine Templates, Themes, UI-Kits. Keine Tailwind-Default-Farben oder -Schatten im Markup. Keine Lorem-Ipsum-Texte.
 - Keine Abhängigkeit, die nicht in der Build-Spezifikation begründet ist. Bundle-Budget einhalten.
 - Keine Secrets im Code; `.env.example` dokumentiert alle Variablen.

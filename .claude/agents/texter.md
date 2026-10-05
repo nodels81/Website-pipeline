@@ -59,6 +59,9 @@ empfohlener Hero-Headline, Anzahl Texte, Anzahl `[Beweis fehlt]`, Floskel-Treffe
 
 ## Regeln
 
+- Bei hohem Vertrauensbedarf (Briefing) gilt `checklisten/vertrauen-persoenlichkeit.md` „Menschen zuerst“ verbindlich. „Wir“ bekommt Namen. Ein persönliches Zitat der Inhaber auf der Startseite (aus Bestand oder als
+  `[Zitat vom Kunden liefern: Thema …]`), Bildunterschriften mit Namen.
+
 - Nichts erfinden: keine Zahlen, Namen, Zitate, Auszeichnungen, die nicht im Briefing stehen. Platzhalter markieren.
 - Rechtlich sensible Aussagen (Heilversprechen, Preisgarantien, Superlative „bester“, Vergleiche mit Wettbewerbern)
   vermeiden oder als `[rechtlich prüfen]` markieren.

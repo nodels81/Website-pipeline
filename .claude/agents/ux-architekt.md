@@ -59,6 +59,9 @@ mit Seitenanzahl, Hauptnavigation, Section-Anzahl der Startseite, den Signature-
 
 ## Regeln
 
+- Bei hohem Vertrauensbedarf (Briefing) gilt `checklisten/vertrauen-persoenlichkeit.md` „Menschen zuerst“ verbindlich. Die Startseite zeigt die Inhaber mit Foto und Namen in den ersten zwei Sections (mobil spätestens im zweiten
+  Bildschirm), bevor ein Formular oder Upload kommt.
+
 - Struktur folgt Zielen und Fragen der Nutzer, nicht der Organisation des Unternehmens.
 - Keine Standard-Reihenfolge „Hero, Logos, Features, Testimonials, CTA“ ohne Begründung; die Einheitsbrei-Landkarte
   gilt auch für Strukturen.

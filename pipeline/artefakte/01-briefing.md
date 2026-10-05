@@ -59,6 +59,8 @@ Punkte. Im Sparprofil lesen Folgeagenten oft nur diesen Abschnitt. Fehlt hier et
 |---|---|---|
 
 ## 8. Gestaltung und Erlebnis
+- **Vertrauensbedarf (hoch/mittel/niedrig) und Begründung:**
+- **Vorhandene Fotos von Menschen, Ort und Arbeit (Bestand/Kunde, Nummern):**
 - **Bewegungsintensität (1–5) und Begründung:**
 - **Mut (1–5) und Begründung:**
 - **Farbschema (hell/dunkel/beides/offen):**

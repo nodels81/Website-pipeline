@@ -48,7 +48,12 @@ Artefakt beginnt mit „0. Kurzfassung (für Folgeagenten)“, höchstens 15 Zei
    (Varianz!), Umgang mit Rand und Bund, mindestens ein geplanter Rasterbruch pro Hauptseite.
 5. **Form und Oberfläche:** Radien (eine Haltung, nicht 16 px überall), Linien, Schatten oder bewusst keine, Texturen,
    Material (Körnung, Papier, Metall, Glas), Icon-Stil (eigene Sprache oder ein konsistentes Set mit Begründung).
-6. **Bildkonzept:** Stil (Fotografie, Illustration, 3D, typografisch), Motive, Perspektive, Licht, Farbbearbeitung,
+6. **Bildkonzept und Bildplan:** Zuerst den vorhandenen Bestand sichten: `assets/bestand/bilder.md` (Website) und
+   `assets/kunde/bilder.md` (vom Kunden, erzeugt mit `node scripts/bilder.mjs --ordner rohdaten/fotos --out assets/kunde`),
+   Kontaktbögen ansehen. **Bildplan** als Tabelle: Section → Bild-Nr./Datei → Beschnitt → Bearbeitung. Echte Fotos der
+   Menschen werden eingeplant und durch Bearbeitung (Farbe, Licht, Beschnitt) in die Bildsprache geholt, nicht ersetzt.
+   Fehlende Motive kommen ins Shooting-Briefing und bekommen im Bildplan einen gekennzeichneten Platzhalter.
+   Danach wie bisher: Stil (Fotografie, Illustration, 3D, typografisch), Motive, Perspektive, Licht, Farbbearbeitung,
    Beschnitt, Verhältnis Bild zu Fläche, Umgang mit vorhandenem Material, **Shooting-Briefing** (Motivliste,
    Stimmung, Referenzen beschrieben) falls nötig, Regeln für KI-Bilder (nur wenn erlaubt, nie als Ersatz für echte
    Menschen/Orte, immer bearbeitet).
@@ -69,6 +74,8 @@ Orchestrator: höchstens zwölf Zeilen mit Prinzipien (Stichworte), Schriften mi
 Satz, Bildkonzept in einem Satz, Anzahl Komponenten, Rote-Liste-Treffer (müssen 0 sein) und offenen Entscheidungen.
 
 ## Regeln
+
+- Bei hohem Vertrauensbedarf (Briefing) gilt `checklisten/vertrauen-persoenlichkeit.md` „Menschen zuerst“ verbindlich. Warmes Gegengewicht zu kühlen Farben oder Funktionsoptik ist Pflicht (Fotos mit Menschen, warme Neutrale).
 
 - Keine Schrift, Farbe oder Form ohne Begründungssatz. „Sieht gut aus“ ist kein Grund.
 - Lizenzpflichtige Schriften als Kostenposition ausweisen; Alternative mit freier Lizenz nennen.

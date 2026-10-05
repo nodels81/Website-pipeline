@@ -50,6 +50,15 @@ Stand: {{Datum}} · Seiten gecrawlt: {{n}} · Analyseordner: `analyse/<slug>/` �
 - CTAs (Anzahl, Formulierungen), Vertrauenselemente, Reibung, Antwortversprechen, Kontaktwege:
 - Befunde:
 
+## 8b. Bildbestand (`assets/bestand/bilder.md`, Kontaktbögen)
+| Motiv | Anzahl | Beste Bilder (Nr.) | Qualität | Verwendbar? |
+|---|---|---|---|---|
+| Personen (Inhaber, Team) | | | | |
+| Werkstatt / Ort | | | | |
+| Arbeit / Vorher-Nachher | | | | |
+| Stock / unbrauchbar | | | | nein |
+- Lücken und Shooting-Bedarf:
+
 ## 9. Was bleibt (Stärken, die erhalten oder ausgebaut werden)
 1.
 2.

@@ -6,7 +6,10 @@
  * Nutzung:
  *   node screenshot.mjs <url> [--out ./analyse/<slug>] [--viewports desktop,tablet,mobile]
  *                             [--sizes 320x568,1920x1080] [--dark] [--reduced-motion] [--no-cookie-dismiss]
- *                             [--fold-only] [--dpr 1]
+ *                             [--fold-only] [--dpr 1] [--serie N]
+ *
+ * --serie N: zusätzlich N Bildschirme beim Herunterscrollen (…-serie-1.png bis -N.png), so wie ein Mensch die
+ * Seite sieht. Gedacht für den kundentester; lesbarer als ein einziges, stark verkleinertes Ganzseiten-Bild.
  *
  * Sparsam für Agenten: --fold-only (keine Ganzseiten-Bilder) und --dpr 1 (einfache Auflösung) reduzieren die
  * Bildgröße und damit den Token-Verbrauch, wenn Agenten die Screenshots ansehen.
@@ -45,6 +48,7 @@ if (!targets.length) { console.error('Keine gültigen Viewports.'); process.exit
 const schemes = args.dark ? ['light', 'dark'] : ['light'];
 const foldOnly = !!args['fold-only'];
 const dpr = args.dpr ? Number(args.dpr) : null;
+const serie = args.serie ? Number(args.serie) : 0;
 const motions = args['reduced-motion'] ? ['no-preference', 'reduce'] : ['no-preference'];
 
 const browser = await launchBrowser(url);
@@ -74,6 +78,21 @@ try {
 
           await autoScroll(page);
           await page.waitForTimeout(500);
+          const serieFiles = [];
+          if (serie > 0) {
+            const vh = await page.evaluate(() => innerHeight);
+            const total = await page.evaluate(() => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
+            const schritte = Math.min(serie, Math.ceil(total / (vh * 0.85)));
+            for (let i = 0; i < schritte; i++) {
+              const y = Math.round(i === schritte - 1 && schritte > 1 ? total - vh : i * vh * 0.85);
+              await page.evaluate((yy) => window.scrollTo(0, yy), y);
+              await page.waitForTimeout(900); // Scroll-Animationen ausspielen lassen
+              const f = path.join(shotDir, `${t.name}${suffix}-serie-${i + 1}.png`);
+              await page.screenshot({ path: f, fullPage: false });
+              serieFiles.push(path.relative(outDir, f));
+            }
+            await page.evaluate(() => window.scrollTo(0, 0));
+          }
           let fullFile = null;
           if (!foldOnly) {
             fullFile = path.join(shotDir, `${t.name}${suffix}-full.png`);
@@ -82,7 +101,7 @@ try {
 
           const pageHeight = await page.evaluate(() => Math.max(document.body.scrollHeight, document.documentElement.scrollHeight));
           const hasHorizontalScroll = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
-          manifest.shots.push({ viewport: t.name, width: t.width || VIEWPORTS[t.preset].width, scheme, reducedMotion: motion === 'reduce', status, fold: path.relative(outDir, foldFile), full: fullFile ? path.relative(outDir, fullFile) : null, pageHeight, hasHorizontalScroll, ms: Date.now() - t0 });
+          manifest.shots.push({ viewport: t.name, width: t.width || VIEWPORTS[t.preset].width, scheme, reducedMotion: motion === 'reduce', status, fold: path.relative(outDir, foldFile), full: fullFile ? path.relative(outDir, fullFile) : null, serie: serieFiles, pageHeight, hasHorizontalScroll, ms: Date.now() - t0 });
           console.log(`✓ ${t.name}${suffix}: ${status} (${pageHeight}px hoch${hasHorizontalScroll ? ', HORIZONTALES SCROLLEN!' : ''}, ${Date.now() - t0} ms)`);
         } catch (err) {
           manifest.shots.push({ viewport: t.name, scheme, reducedMotion: motion === 'reduce', status, error: String(err.message || err) });

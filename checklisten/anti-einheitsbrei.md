@@ -66,8 +66,10 @@ Einheitsbrei-Landkarte aus `02-konkurrenzanalyse.md`.
 - [ ] **Farbhaltung:** eine dominante Markenfarbe mit Rolle, getönte Neutrale, nachgewiesene Kontraste (≥ 4,5:1 Text,
       ≥ 3:1 UI), Begründung aus Marke und Abgrenzung
 - [ ] **Eigenes Raster und Rhythmus:** bewusste Variation von Section-Höhe, Dichte, Ausrichtung; mindestens ein Rasterbruch
-- [ ] **Bildkonzept:** definierter Stil (Fotografie, Illustration, 3D, Typografie als Bild), Bearbeitungsregeln,
-      Shooting-Briefing falls nötig
+- [ ] **Bildkonzept:** definierter Stil, Bearbeitungsregeln, Bildplan mit echten Fotos aus dem Bestand oder vom
+      Kunden, Shooting-Briefing für Lücken
+- [ ] **Menschen sichtbar:** bei hohem Vertrauensbedarf Inhaber/Team mit Foto und Namen früh auf der Startseite
+      (`vertrauen-persoenlichkeit.md`)
 - [ ] **Drei bis fünf Signature-Moments** in der Bewegung, jeder mit Funktion (Orientierung, Hierarchie, Feedback,
       Erzählung) und Reduced-Motion-Alternative
 - [ ] **Konkrete Beweise** auf der Startseite: Zahlen, Namen, Fälle, Zitate, Auszeichnungen, Prozesse
@@ -80,12 +82,16 @@ Einheitsbrei-Landkarte aus `02-konkurrenzanalyse.md`.
 
 | Dimension | Gewicht | Frage |
 |---|---|---|
-| Unterscheidbarkeit | 25 | Ohne Logo erkennbar? Weicht von ≥ 80 % der Einheitsbrei-Landkarte ab? |
-| Konsistenz zur Signature Idea | 20 | Ziehen Typografie, Farbe, Layout, Bewegung und Text am selben Strang? |
-| Begründungstiefe | 15 | Hat jede Hauptentscheidung einen Grund aus Marke, Zielgruppe oder Abgrenzung? |
-| Bewegungsqualität | 15 | Funktion statt Dekoration? Signature-Moments vorhanden? Reduced Motion gelöst? |
-| Sprachqualität | 15 | Keine Floskeln, konkrete Beweise, hörbare Tonalität? |
+| Unterscheidbarkeit | 20 | Ohne Logo erkennbar? Weicht von ≥ 80 % der Einheitsbrei-Landkarte ab? |
+| **Vertrauen und Nähe** | 20 | Sieht man die Menschen? Wirkt es warm, ehrlich, erreichbar? Erfüllt es `vertrauen-persoenlichkeit.md`? |
+| Konsistenz zur Signature Idea | 15 | Ziehen Typografie, Farbe, Layout, Bewegung und Text am selben Strang? |
+| Begründungstiefe | 10 | Hat jede Hauptentscheidung einen Grund aus Marke, Zielgruppe oder Abgrenzung? |
+| Bewegungsqualität | 10 | Funktion statt Dekoration? Signature-Moments vorhanden? Reduced Motion gelöst? |
+| Sprachqualität | 15 | Keine Floskeln, konkrete Beweise, hörbare Tonalität, Menschen mit Namen? |
 | Handwerk | 10 | Typografische Details, Kontraste, Rhythmus, Zustände, Fehlerfälle? |
+
+**Sperre:** Weniger als 12 von 20 Punkten bei „Vertrauen und Nähe“ bedeutet Rückgabe, unabhängig von der Gesamtpunktzahl.
+Eigenständigkeit, die Vertrauen kostet, ist kein Erfolg.
 
 - **≥ 90:** Freigabe.
 - **80–89:** Freigabe mit benannten Pflichtkorrekturen im nächsten Schritt.

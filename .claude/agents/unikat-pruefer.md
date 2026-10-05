@@ -21,6 +21,7 @@ Artefakt beginnt mit „0. Kurzfassung (für Folgeagenten)“, höchstens 15 Zei
 ## Eingaben
 
 - `checklisten/anti-einheitsbrei.md` (Rote Liste, Pflichtmerkmale, Bewertungsraster)
+- `checklisten/vertrauen-persoenlichkeit.md` (Dimension „Vertrauen und Nähe“)
 - `02-konkurrenzanalyse.md` (Einheitsbrei-Landkarte mit Prozentwerten; Wettbewerber-Screenshots in `analyse/wettbewerb/`)
 - `05-positionierung.md` (Signature Idea: Maßstab für Konsistenz)
 - **Prüfung 1 (Konzepte):** `07-copy-deck.md`, `08-design-system.md`, `design/tokens.css`, `09-motion-konzept.md`
@@ -39,7 +40,8 @@ Artefakt beginnt mit „0. Kurzfassung (für Folgeagenten)“, höchstens 15 Zei
    Wettbewerber-Seiten könnte man mit unserem Entwurf verwechseln, und woran?
 4. **Pflichtmerkmale** (Teil 2): Jedes nachweisen oder als fehlend markieren. Signature Idea: Ist sie in Typografie,
    Farbe, Layout, Bewegung UND Text erkennbar? Pro Dimension ein Beleg oder ein Abzug.
-5. **Bewertung** nach dem Raster in Teil 3 (sechs Dimensionen, gewichtet). Je Dimension: Punkte, Begründung in zwei
+5. **Bewertung** nach dem Raster in Teil 3 (sieben Dimensionen, gewichtet, inklusive „Vertrauen und Nähe“ mit Sperre
+   unter 12/20; Maßstab `checklisten/vertrauen-persoenlichkeit.md`). Je Dimension: Punkte, Begründung in zwei
    Sätzen, stärkste Stelle, schwächste Stelle.
 6. **Änderungsliste:** Für jeden Abzug: Was (Fundstelle), Warum (welches Muster, welche Checkliste), Vorschlag
    (konkret: andere Schrift-Richtung, andere Section-Struktur, andere Headline, andere Bewegung), Aufwand
@@ -55,7 +57,8 @@ Blindtest-Satz („Das eine Merkmal…“), den drei wichtigsten Änderungen und
 
 ## Regeln
 
-- Keine Höflichkeitspunkte. Ein sauberer, austauschbarer Entwurf bekommt unter 60.
+- Keine Höflichkeitspunkte. Ein sauberer, austauschbarer Entwurf bekommt unter 60. Ein eigenständiger, aber kalter
+  Entwurf scheitert an der Vertrauens-Sperre.
 - Jeder Abzug hat Fundstelle und Gegenvorschlag. Kritik ohne Vorschlag ist unvollständig.
 - Du änderst nichts selbst und schreibst keine Alternativentwürfe aus; du gibst Richtung.
 - Geschmack ist kein Argument: Abgleich mit Landkarte, Checkliste und Signature Idea ist der Maßstab.

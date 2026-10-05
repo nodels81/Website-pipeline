@@ -6,7 +6,7 @@ Modus: neu / verbessern · Gestartet: {{}} · Fertig: {{}} · Dauer: {{}} · Aut
 - **Signature Idea:** …
 - **Positionierung:** …
 - **Gewählte Richtung:** {{A/B/C: Name}} (automatisch gewählt, Alternativen: …)
-- **Qualität:** Lighthouse mobil {{Perf}}/{{A11y}}/{{SEO}} · LCP {{}} · CLS {{}} · Unikat {{}}/100 · QA-Durchläufe {{}}
+- **Qualität:** Lighthouse mobil {{Perf}}/{{A11y}}/{{SEO}} · LCP {{}} · CLS {{}} · Unikat {{}}/100 · Kundentest {{}}/10 · QA-Durchläufe {{}}
 - **Stand:** fertig gebaut und geprüft / gebaut mit offenen Punkten / abgebrochen in Phase {{}}
 
 ## Was im Paket liegt (`ausgang/{{slug}}/`)
@@ -43,6 +43,9 @@ Oder `website/` manuell hochladen. Launch-Plan in `dokumentation/12-uebergabe.md
 - `[vom Kunden liefern]`: …
 - Schriftlizenzen zu kaufen: …
 - Shooting-Briefing: siehe `dokumentation/08-design-system.md`
+
+## Verbrauch
+- Siehe `kosten.json` im Paket (Tokens, Dauer, API-Gegenwert je Lauf und Summe). Mit Claude Max entstehen keine Zusatzkosten.
 
 ## Lücken und Fehler im Lauf
 - (Skripte oder Quellen, die nicht erreichbar waren; Phasen, die mit Einschränkung endeten)

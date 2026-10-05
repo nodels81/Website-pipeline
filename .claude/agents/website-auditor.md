@@ -31,6 +31,14 @@ Artefakt beginnt mit „0. Kurzfassung (für Folgeagenten)“, höchstens 15 Zei
    ```
    Falls Lighthouse fehlschlägt (kein Chrome, Netzwerk), `--skip-lighthouse` nutzen und die Lücke im Bericht benennen.
    Bei einzelnen Fehlern die Einzelskripte nachziehen (`screenshot.mjs`, `crawl.mjs`, `tokens.mjs`, `audit.sh`).
+1b. **Bildbestand einsammeln** (eigene Fotos des Kunden sind Kundenmaterial und dürfen auf die neue Seite):
+   ```bash
+   node scripts/bilder.mjs <url> --out projekte/<slug>/assets/bestand --max 15
+   ```
+   Kontaktbögen `assets/bestand/kontaktbogen-*.png` ansehen (Read) und in `assets/bestand/bilder.md` die Spalte
+   **Motiv** für jedes Bild ausfüllen (`Person: <Name/Rolle>`, `Team`, `Werkstatt/Ort`, `Arbeit/Ergebnis`,
+   `Vorher/Nachher`, `Produkt`, `Logo/Grafik`, `Stock (nicht verwenden)`, `unbrauchbar`). Namen nur, wenn sie aus
+   Alt-Text, Bildunterschrift oder Seitentext eindeutig hervorgehen.
 2. **Ergebnisse lesen:** `crawl-summary.md`, `crawl.json` (bei Bedarf gezielt mit Grep), `tokens.md`,
    `lighthouse-summary.md`. **Screenshots ansehen** (`screenshots/*-fold.png`, im Profil `premium` auch `*-full.png`, mit
    dem Read-Werkzeug öffnen): Du beurteilst Gestaltung nur, was du gesehen hast.
@@ -46,6 +54,9 @@ Artefakt beginnt mit „0. Kurzfassung (für Folgeagenten)“, höchstens 15 Zei
    7. Barrierefreiheit (Lighthouse-Befunde plus manuelle Prüfung aus Screenshots und DOM: Kontraste, Alt-Texte,
       Fokus, Reduced Motion, Formular-Labels; BFSG-Relevanz einschätzen)
    8. Conversion (CTAs, Vertrauenselemente, Reibung, Antwortversprechen, Kontaktwege)
+3b. **Bildbestand bewerten:** Abschnitt „Bildbestand“ im Bericht: Anzahl je Motiv, beste Fotos der Menschen (Nummern),
+   Qualität (Auflösung, Licht, Aktualität), Lücken (z. B. „kein Foto von Ben“, „keine Werkstatt von innen“) als
+   Shooting-Bedarf.
 4. **Was bleibt:** Mindestens drei Stärken, die nachweislich funktionieren und erhalten oder ausgebaut werden sollen.
 5. **Priorisierte Maßnahmen:** Tabelle mit Wirkung (hoch/mittel/niedrig), Aufwand (hoch/mittel/niedrig), Phase der
    Pipeline, in der sie gelöst wird. Quick Wins separat.

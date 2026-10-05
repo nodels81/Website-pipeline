@@ -120,8 +120,10 @@ function Invoke-Pipeline([string] $eingabe) {
   $start = Get-Date
   "Start: $($start.ToString('s'))" | Set-Content -LiteralPath $log
   $prev = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
-  & claude @claudeArgs 2>&1 | Tee-Object -FilePath $log -Append
+  $jsonOut = Join-Path $outDir '.claude-ausgabe.json'
+  & claude @claudeArgs --output-format json 2>> $log | Set-Content -LiteralPath $jsonOut -Encoding UTF8
   $rc = $LASTEXITCODE
+  & node scripts/kosten.mjs $jsonOut $slug 2>&1 | Tee-Object -FilePath $log -Append
   $ErrorActionPreference = $prev
   $ende = Get-Date
   "Ende: $($ende.ToString('s')) · Dauer: $([int](($ende - $start).TotalMinutes)) min · Exit: $rc" | Tee-Object -FilePath $log -Append | Write-Host

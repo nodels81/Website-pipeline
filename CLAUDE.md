@@ -42,6 +42,11 @@ Drei-Spalten-Icon-Features ohne Anlass, Inter/Roboto als Headline-Schrift ohne B
 Stockfotos mit Handschlag, Floskeln wie „Willkommen auf unserer Website“ oder „Wir sind ein junges, dynamisches Team“.
 Der Agent `unikat-pruefer` lehnt Entwürfe unter 80 von 100 Punkten ab.
 
+Ebenso verbindlich: **Vertrauen vor Originalität.** Bei Handwerk, Gesundheit, Recht, Finanzen und anderen
+inhabergeführten Betrieben gilt `checklisten/vertrauen-persoenlichkeit.md` („Menschen zuerst“): echte Fotos der Inhaber
+mit Namen früh auf der Startseite, warme Anmutung, ehrliche Erwartungen. Der `unikat-pruefer` sperrt Entwürfe mit
+weniger als 12/20 Punkten bei „Vertrauen und Nähe“, der `kundentester` bewertet aus Sicht der Zielkunden (Mindestnote 7/10).
+
 ## Arbeitsweise für den Orchestrator (Hauptsession)
 
 1. **Projektordner anlegen:** `projekte/<slug>/` mit `rohdaten/`, `artefakte/`, `design/`, `build/`. Jede Phase schreibt
@@ -83,7 +88,8 @@ Der Agent `unikat-pruefer` lehnt Entwürfe unter 80 von 100 Punkten ab.
 ## Was der Orchestrator nie tut
 
 - Keine Wettbewerber oder Trends erfinden, wenn Recherche fehlschlägt. Stattdessen Lücke benennen.
-- Keine Templates, Themes oder Bestandsseiten als Basis verwenden.
+- Keine Templates, Themes oder Bestandsseiten als Basis verwenden. Ausnahme ist Kundenmaterial: eigene Fotos,
+  Logo, Fakten und Bewertungen des Kunden dürfen und sollen verwendet werden (`scripts/bilder.mjs`).
 - Kein Build ohne vorher freigegebenes (oder im Automatik-Modus geprüftes) Design-System und Motion-Konzept.
 - Keine Inhalte des Kunden (Texte, Bilder, Daten) an externe Dienste schicken, die nicht im Briefing freigegeben sind.
 - Kein Produktions-Deploy ohne `--deploy-prod` oder ausdrückliche Freigabe an Gate 4.

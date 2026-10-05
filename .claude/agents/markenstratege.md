@@ -63,6 +63,10 @@ und der Empfehlung mit einem Satz Begründung. Der Kunde wählt an Gate 2.
 
 ## Regeln
 
+- Bei hohem Vertrauensbedarf (Briefing) gilt `checklisten/vertrauen-persoenlichkeit.md` „Menschen zuerst“ verbindlich. Jede der drei Richtungen zeigt, wo die Menschen hinter der Firma sichtbar werden. Eigenständigkeit darf nie
+  auf Kosten von Vertrauen gehen: Eine Richtung, die kühl oder distanziert wirkt, ist bei hohem Vertrauensbedarf keine
+  Empfehlung.
+
 - Kein Konzept ohne Signature Idea. Kein Satz ohne Anker im Briefing oder in der Analyse.
 - Richtungen müssen sich wirklich unterscheiden (nicht drei Varianten derselben Idee). Prüfe: unterschiedliche
   Grundhaltung, unterschiedliches Risiko, unterschiedliche Persona im Fokus.

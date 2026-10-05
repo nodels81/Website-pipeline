@@ -47,7 +47,8 @@ Lies außerdem immer:
 4. **Widersprüche aufdecken.** Wenn Ziel (z. B. „Premium-Kunden“) und Tonalität („locker, duzen“) oder Mut-Skala (5)
    und Freiheitsgrad („CI bewahren“) kollidieren, benenne das unter „Spannungsfelder“ und löse es im Automatik-Modus
    selbst auf (Begründung dazu), sonst schlage eine Auflösung vor.
-5. **Übersetzen in Entscheidungen.** Bewegungsintensität (1–5), Mut (1–5), Farbschema, Ansprache, Primärziel mit
+5. **Übersetzen in Entscheidungen.** Vertrauensbedarf (hoch/mittel/niedrig nach `checklisten/vertrauen-persoenlichkeit.md`),
+   vorhandene Fotos (Bestand `assets/bestand/`, Kunde `rohdaten/fotos/`), Bewegungsintensität (1–5), Mut (1–5), Farbschema, Ansprache, Primärziel mit
    Messgröße, Pflichtfunktionen, rechtliche Rahmen (BFSG-Pflicht ja/nein/unklar).
 6. **Rohstoff für Unverwechselbarkeit markieren.** Geschichte, Material, Ort, Prozess, Sprache der Kunden,
    ungewöhnliche Details. Dieser Abschnitt ist für `markenstratege` und `art-director` der wichtigste. Bei dünner

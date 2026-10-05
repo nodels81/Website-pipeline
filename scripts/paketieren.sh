@@ -14,8 +14,8 @@ PROJ="projekte/${SLUG:?}"
 OUT="ausgang/${SLUG:?}"
 [[ -d "$PROJ" ]] || { echo "Projektordner $PROJ fehlt." >&2; exit 1; }
 
-# Altes Paket entfernen (nur unterhalb von ausgang/)
-[[ -d "$OUT" ]] && find "ausgang/${SLUG:?}" -mindepth 1 -delete
+# Altes Paket entfernen (nur unterhalb von ausgang/; Lauf-Protokoll und Kosten bleiben erhalten)
+[[ -d "$OUT" ]] && find "ausgang/${SLUG:?}" -mindepth 1 -not -name pipeline.log -not -name kosten.json -not -name .claude-ausgabe.json -delete
 [[ -f "ausgang/${SLUG:?}.zip" ]] && unlink "ausgang/${SLUG:?}.zip"
 [[ -f "ausgang/${SLUG:?}.tar.gz" ]] && unlink "ausgang/${SLUG:?}.tar.gz"
 mkdir -p "$OUT"

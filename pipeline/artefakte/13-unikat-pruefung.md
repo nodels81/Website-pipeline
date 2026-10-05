@@ -27,10 +27,11 @@ Stand: {{Datum}} · Geprüft: {{07, 08, 09 | Screenshots des Builds}} · Maßsta
 ## 5. Bewertung
 | Dimension | Gewicht | Punkte | Begründung | Stärkste Stelle | Schwächste Stelle |
 |---|---|---|---|---|---|
-| Unterscheidbarkeit | 25 | | | | |
-| Konsistenz zur Signature Idea | 20 | | | | |
-| Begründungstiefe | 15 | | | | |
-| Bewegungsqualität | 15 | | | | |
+| Unterscheidbarkeit | 20 | | | | |
+| Vertrauen und Nähe (Sperre < 12) | 20 | | | | |
+| Konsistenz zur Signature Idea | 15 | | | | |
+| Begründungstiefe | 10 | | | | |
+| Bewegungsqualität | 10 | | | | |
 | Sprachqualität | 15 | | | | |
 | Handwerk | 10 | | | | |
 | **Summe** | 100 | | | | |

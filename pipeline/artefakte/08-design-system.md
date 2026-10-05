@@ -43,6 +43,10 @@ Punkte. Im Sparprofil lesen Folgeagenten oft nur diesen Abschnitt. Fehlt hier et
 - **Shooting-Briefing** (falls): Motivliste, Stimmung, Referenzen in Worten:
 - Regeln für KI-Bilder (falls erlaubt):
 
+### Bildplan (Pflicht)
+| Seite / Section | Bild (Nr./Datei aus assets/bestand oder assets/kunde) | Motiv | Beschnitt / Format | Bearbeitung | Platzhalter, falls fehlt |
+|---|---|---|---|---|---|
+
 ## 7. Komponenten
 | Komponente | Gestaltung | Zustände (Standard, Hover, Fokus, aktiv, deaktiviert, Fehler, leer, geladen) | Touch-Variante | Zielgröße |
 |---|---|---|---|---|

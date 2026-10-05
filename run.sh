@@ -99,9 +99,11 @@ run_one () {
   start=$(date +%s)
   echo "Start: $(date -Iseconds)" > "$log"
   set +e
-  claude "${args[@]}" 2>&1 | tee -a "$log"
-  local rc=${PIPESTATUS[0]}
+  local jsonout="ausgang/$slug/.claude-ausgabe.json"
+  claude "${args[@]}" --output-format json > "$jsonout" 2>>"$log"
+  local rc=$?
   set -e
+  node scripts/kosten.mjs "$jsonout" "$slug" | tee -a "$log"
   ende=$(date +%s)
   echo "Ende: $(date -Iseconds) · Dauer: $(( (ende-start)/60 )) min · Exit: $rc" | tee -a "$log"
 

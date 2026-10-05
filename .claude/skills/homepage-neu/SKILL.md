@@ -82,6 +82,8 @@ Vorne Eingabe rein, hinten fertige Website raus. Im Automatik-Modus gilt zusätz
 ## Phase 0: Briefing
 
 - Mit `--antworten`: Datei nach `projekte/<slug>/rohdaten/fragebogen-antworten.md` kopieren.
+- Fotos des Kunden: Liegen Bilder in `projekte/<slug>/rohdaten/fotos/`, vor dem Briefing
+  `node scripts/bilder.mjs --ordner projekte/<slug>/rohdaten/fotos --out projekte/<slug>/assets/kunde` ausführen.
 - Ohne `--antworten` und ohne `--auto`: Skill `/fragebogen <slug>` aufrufen (interaktiv, schreibt `rohdaten/gespraech.md`).
 - Agent `briefing-agent` starten: Projektordner, Quellen, Modus „neu“, Automatik ja/nein. Ergebnis:
   `artefakte/01-briefing.md`, `briefing.json`.
@@ -109,10 +111,13 @@ Trends) in den Status. Kein Gate.
 2. **Parallel:** `texter` → `07-copy-deck.md` und `art-director` → `08-design-system.md` + `design/tokens.css`.
 3. `motion-designer` → `09-motion-konzept.md`.
 4. `unikat-pruefer` (Prüfung 1) → `13-unikat-pruefung-1.md`.
-   - < 80: Änderungsliste als Auftrag an die zuständigen Agenten, danach erneut prüfen (Limit: `unikatRunden`).
+   - < 80 oder Vertrauens-Sperre: Änderungsliste als Auftrag an die zuständigen Agenten, danach erneut prüfen (Limit:
+     `unikatRunden`).
    - 80–89: Pflichtkorrekturen als Auftrag an die Zuständigen, weiter ohne erneute Vollprüfung.
+4b. `kundentester` (Prüfung 1, Konzept) → `15-kundentest-1.md`. Unter `mindestVertrauen`: Änderungsliste an die
+   Zuständigen, danach nur die geänderten Stellen erneut testen (zählt gegen `unikatRunden`).
 5. **Gate 3:** Interaktiv: Prinzipien, Schriften mit Lizenzkosten, Farbhaltung, Bildkonzept, Hero-Headline,
-   Signature-Moments, Unikat-Punktzahl vorlegen und Freigabe einholen. Automatik: freigegeben (siehe oben).
+   Signature-Moments, Bildplan mit echten Fotos, Unikat-Punktzahl, Kundentest-Note vorlegen und Freigabe einholen. Automatik: freigegeben (siehe oben).
 
 ## Phase 4: Build
 
@@ -126,6 +131,8 @@ Trends) in den Status. Kein Gate.
 2. `qa-reviewer` → `11-qa-protokoll.md` (Messungen nach `analyse/<slug>-qa/`).
 3. Solange Blocker oder Muss-Punkte offen: `frontend-entwickler` mit Fehlerliste, dann `qa-reviewer` erneut
    (Limit: `qaRunden`).
+3b. `kundentester` (Prüfung 2, Ergebnis, mit Bildschirm-Serie) → `15-kundentest-2.md`. Unter `mindestVertrauen`:
+   Änderungsliste an `frontend-entwickler` (und bei Bedarf `art-director`/`texter`), zählt gegen `qaRunden`.
 4. `unikat-pruefer` (Prüfung 2) → `13-unikat-pruefung-2.md`. < 80: zurück zu Schritt 3 mit den Änderungen (zählt
    gegen das QA-Limit).
 5. `frontend-entwickler` schreibt `12-uebergabe.md`.
@@ -137,7 +144,7 @@ Trends) in den Status. Kein Gate.
 ## Phase 6: Paketieren (immer, auch bei `--bis` und bei Abbruch)
 
 1. `projekte/<slug>/ERGEBNIS.md` nach Vorlage `pipeline/artefakte/14-ergebnis.md` schreiben: Kennzahlen aus 11,
-   Unikat-Punkte aus 13, Entscheidungen und Lücken aus 00, Annahmen aus 01, offene Punkte aus 07/08/11/12,
+   Unikat-Punkte aus 13, Kundentest-Note aus 15, Entscheidungen und Lücken aus 00, Annahmen aus 01, offene Punkte aus 07/08/11/12,
    Deploy-URL falls vorhanden, Stand (fertig / mit offenen Punkten / abgebrochen in Phase n).
 2. `bash scripts/paketieren.sh <slug>` → `ausgang/<slug>/` und ZIP.
 3. Abschlussnachricht: Kurzfassung von `ERGEBNIS.md` (Signature Idea, Kennzahlen, Pfad des Pakets, was der Kunde

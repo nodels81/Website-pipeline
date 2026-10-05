@@ -101,7 +101,7 @@ run.sh / run.ps1       Vollautomatik: eine Eingabe, ein Paket (Bash / PowerShell
 eingang/               Vorlagen für Kurzbrief und URL-Eingabe; eigene Dateien werden nicht versioniert
 ausgang/               Ergebnisse (nicht versioniert)
 pipeline.config.json   Sparprofile (sparsam/standard/premium), Standardwerte für fehlende Angaben, Deploy-Ziel
-.claude/agents/        12 Subagenten (je ein Spezialist mit eigenem Prompt, Werkzeugen, Modell)
+.claude/agents/        13 Subagenten (je ein Spezialist mit eigenem Prompt, Werkzeugen, Modell)
 .claude/skills/        5 Skills, die die Agenten orchestrieren
 .claude/settings.json  Freigaben für Recherche, Skripte, npm
 CLAUDE.md              Regeln für den Orchestrator (Gates, Qualitätsmaßstab, Verbote)
@@ -131,7 +131,8 @@ analyse/<slug>/        Messdaten (Screenshots, crawl.json, tokens.json, Lighthou
 | `motion-designer` | Bewegungscharakter, Signature-Moments, Scroll-Choreografie, Reduced Motion, Budget | 09 |
 | `frontend-entwickler` | Astro + Tailwind + GSAP Build nach Artefakten, SEO, A11y, Performance, Fixes | 10 + Code, 12 |
 | `qa-reviewer` | Lighthouse, WCAG 2.2, Reduced Motion, Responsiv, Inhalte, Links, Sicherheit, Fehlerliste | 11 |
-| `unikat-pruefer` | Bewertung 0–100 gegen Rote Liste und Einheitsbrei-Landkarte; < 80 = Rückgabe | 13 |
+| `unikat-pruefer` | Bewertung 0–100 gegen Rote Liste, Einheitsbrei-Landkarte und Vertrauen; < 80 oder Vertrauens-Sperre = Rückgabe | 13 |
+| `kundentester` | Schaut als Zielkunde auf Konzept und fertige Seite: Vertrauen, Sympathie, Verständlichkeit, Handlung; < 7/10 = Rückgabe | 15 |
 
 ## Skripte (auch einzeln nutzbar)
 

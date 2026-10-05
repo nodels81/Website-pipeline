@@ -16,8 +16,12 @@ Jedes Artefakt 01–09 beginnt mit **„0. Kurzfassung (für Folgeagenten)“** 
 | art-director | K | V | K | G | V | V | – | – | – |
 | motion-designer | K | K | K | – | V | V | – | V | – |
 | unikat-pruefer | – | V | – | – | V | K | V | V | V |
+| kundentester | K | – | – | – | V | G | G | G | – |
 | frontend-entwickler | K | – | – | G | K | V | V | V | V |
 | qa-reviewer | – | – | – | – | – | V | V | K | V |
+
+Bildbestand: `assets/bestand/bilder.md` und `assets/kunde/bilder.md` lesen alle gestaltenden Agenten (art-director,
+ux-architekt, texter, frontend-entwickler, kundentester); Bilder werden über die Kontaktbögen angesehen, nicht einzeln.
 
 Weitere Spar-Regeln für alle Agenten:
 

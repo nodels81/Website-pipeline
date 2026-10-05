@@ -1,6 +1,6 @@
 # Die Pipeline
 
-Eine Agenten-Pipeline in Claude Code für Websites, die **exklusiv, begründet und messbar gut** sind. Vorne eine
+Eine Agenten-Pipeline in Claude Code für Websites, die **exklusiv, vertrauenswürdig, begründet und messbar gut** sind. Vorne eine
 Eingabe (Kurzbrief, Fragebogen oder URL), hinten ein fertiges Paket. Zwölf Spezialagenten, sechs Phasen, vier Gates,
 fünfzehn Artefakte.
 
@@ -50,12 +50,14 @@ EINGANG  eingang/<projekt>.md (Kurzbrief / Fragebogen)          eingang/<projekt
                           motion-designer ─────────► 09-motion-konzept
                                   ▼
                           unikat-pruefer (1) ──────► 13-unikat-pruefung-1   ◄── < 80: zurück (max. unikatRunden)
+                          kundentester (1) ────────► 15-kundentest-1        ◄── < 7/10: zurück
                                              ═══ GATE 3: Design & Motion ═══
                                   ▼
                         frontend-entwickler ───────► 10-build-spezifikation + Code (projekte/<slug>/build)
                                   ▼
                            qa-reviewer ────────────► 11-qa-protokoll  ◄──► frontend-entwickler (max. qaRunden)
                                   ▼
+                          kundentester (2) ────────► 15-kundentest-2        ◄── < 7/10: zurück an Build
                           unikat-pruefer (2) ──────► 13-unikat-pruefung-2
                                   ▼
                         frontend-entwickler ───────► 12-uebergabe
@@ -73,9 +75,9 @@ AUSGANG  ausgang/<slug>/ {ERGEBNIS.md, website/, quellcode/, dokumentation/, vor
 | 0b | `briefing` | `/fragebogen` oder Eingabedatei, dann `briefing-agent` | opus | Antworten, Audit, `pipeline.config.json` | `01-briefing.md`, `briefing.json` | **1** |
 | 1 | `analyse` | `konkurrenz-analyst` ∥ `trend-scout` | opus | 01 | `02-konkurrenzanalyse.md`, `03-trendreport.md`, `analyse/wettbewerb/` | – |
 | 2 | `positionierung` | `markenstratege` | opus | 01, 02, 03 | `05-positionierung.md` | **2** |
-| 3 | `konzept` | `ux-architekt` → (`texter` ∥ `art-director`) → `motion-designer` → `unikat-pruefer` | opus | 01–06 | `06`, `07`, `08` + `design/tokens.css`, `09`, `13-…-1` | **3** |
+| 3 | `konzept` | `ux-architekt` → (`texter` ∥ `art-director`) → `motion-designer` → `unikat-pruefer` → `kundentester` | opus | 01–06, Bildbestand | `06`, `07`, `08` + `design/tokens.css`, `09`, `13-…-1`, `15-…-1` | **3** |
 | 4 | `build` | `frontend-entwickler` | opus | 06–09 | `10-build-spezifikation.md`, `build/`, `analyse/<slug>-build/` | – |
-| 5 | `qa` | `qa-reviewer` ⇄ `frontend-entwickler`, `unikat-pruefer`, `frontend-entwickler` | sonnet/opus | Build, 07, 09, Checklisten | `11-qa-protokoll.md`, `13-…-2`, `12-uebergabe.md`, `analyse/<slug>-qa/` | **4** |
+| 5 | `qa` | `qa-reviewer` ⇄ `frontend-entwickler`, `kundentester`, `unikat-pruefer`, `frontend-entwickler` | sonnet/opus | Build, 07, 09, Checklisten | `11-qa-protokoll.md`, `13-…-2`, `12-uebergabe.md`, `analyse/<slug>-qa/` | **4** |
 | 6 | `paket` | Orchestrator, `scripts/paketieren.sh`, optional `scripts/deploy.sh` | – | alles | `ERGEBNIS.md`, `ausgang/<slug>/`, ZIP | – |
 
 Modelle stehen in den Agentendateien (`model:`) und können dort geändert werden. Jeder Agent liest seine Vorlage aus

@@ -74,7 +74,11 @@ ersetzt der `briefing-agent` durch begründete Annahmen aus dem Audit und den St
 
 ## Phase 3: Konzeption
 
-Wie in `/homepage-neu`. Zusätze: `ux-architekt` erstellt die Weiterleitungstabelle alte → neue URLs aus `crawl.json`
+Vorab: Fehlt `projekte/<slug>/assets/bestand/bilder.md` (z. B. Audit aus einer älteren Pipeline-Version), zuerst
+`node scripts/bilder.mjs <url> --out projekte/<slug>/assets/bestand --max 15` ausführen und den `website-auditor` nur die
+Spalte „Motiv“ ausfüllen lassen (Auftrag: Kontaktbögen ansehen, `bilder.md` ergänzen, sonst nichts).
+
+Wie in `/homepage-neu` (inklusive Kundentest). Zusätze: `ux-architekt` erstellt die Weiterleitungstabelle alte → neue URLs aus `crawl.json`
 des Audits und sichert den SEO-Bestand; `art-director` erhält `analyse/<slug>/tokens.md` als Ist-Zustand und
 begründet in der Begründungstabelle, was vom Bestand bleibt und warum; `texter` übernimmt keine Alt-Texte ungeprüft.
 **Gate 3** wie in `/homepage-neu`.
