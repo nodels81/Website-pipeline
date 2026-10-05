@@ -59,6 +59,14 @@ Voraussetzung unter Windows ist **Git für Windows** (bringt Git Bash mit); Clau
 Analyse-Skripte laufen darüber. `run.ps1` wurde in der Entwicklungs-Sandbox nicht ausgeführt (kein PowerShell dort);
 bei Problemen bitte die Meldung aus `ausgang\<projekt>\pipeline.log` prüfen.
 
+## Fertige Website ansehen
+
+Windows: im Ordner `Website-pipeline` doppelt auf `vorschau.cmd` klicken und den Projektnamen eingeben (z. B.
+`delatec-de`), oder im Terminal `.\vorschau.cmd delatec-de`. Der Browser öffnet sich mit `http://localhost:4321`.
+macOS/Linux: `bash vorschau.sh delatec-de`. Andere Geräte im selben WLAN erreichen die Seite über die angezeigte
+„Network“-Adresse. Zum Testen auf einem eigenen Server den Inhalt von `ausgang/<projekt>/website/` hochladen
+(siehe `dokumentation/12-uebergabe.md`).
+
 ## Verbrauch steuern: Sparprofile
 
 Drei Profile regeln Modellwahl, Analyseumfang, Screenshots, Kurzfassungen zwischen den Agenten und Nachbesserungsrunden.
