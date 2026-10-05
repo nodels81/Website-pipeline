@@ -91,6 +91,7 @@ Dauerhaft ändern: `"profil"` in `pipeline.config.json`. Zusätzlich hilft: pro 
 | `/fragebogen meinprojekt` | Nur den Fragebogen interaktiv durchführen und ein Briefing erzeugen |
 | `/konkurrenzanalyse "Steuerberatung" "Köln" --mit-trends` | Nur Wettbewerber und Nachfrage analysieren |
 | `/audit https://beispiel.de` | Nur die Ist-Analyse einer Website |
+| `/pipeline-review` | Prüft die Pipeline selbst auf Nutzen, Verbrauch und Kosten und schlägt eine schlankere Fassung vor (ändert erst nach Freigabe) |
 
 Ohne Claude Code: `prompts/MASTER-PROMPT.md` ist ein eigenständiger Prompt mit derselben Methodik.
 
