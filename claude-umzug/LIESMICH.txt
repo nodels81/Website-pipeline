@@ -1,0 +1,19 @@
+CLAUDE-UMZUG
+============
+
+1. Diesen ganzen Ordner "claude-umzug" auf die Wechselplatte kopieren (z.B. E:\claude-umzug).
+
+2. ALTER Rechner:  Doppelklick auf  Sichern.bat
+   - zeigt an, was gesichert wird und wie gross es ist
+   - nach Bestaetigung wird alles nach E:\claude-umzug\Claude-Umzug kopiert
+   - gesichert werden: Claude Code (.claude, .claude.json), Claude-Desktop-Einstellungen
+     und alle Projekte (jeder Ordner, in dem Claude Code benutzt wurde, und alle Git-Projekte)
+   - NICHT mitkopiert: Anmeldedaten (neu anmelden), node_modules/venv (neu installieren)
+
+3. Platte an den NEUEN Rechner, Doppelklick auf  Wiederherstellen.bat
+   - ueberschreibt nichts Neueres, legt vorher Sicherungen an (*.vor-umzug-DATUM)
+   - passt Pfade an, falls der Benutzername anders ist
+
+Vorher jeweils alle Claude-Fenster schliessen.
+Falls Windows "Der Computer wurde durch Windows geschuetzt" meldet:
+"Weitere Informationen" -> "Trotzdem ausfuehren".
