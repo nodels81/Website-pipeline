@@ -3,6 +3,16 @@
 
 Alles läuft per Doppelklick. Die Fenster bleiben am Ende offen, bis du eine Taste drückst.
 
+WICHTIG: Dieser Ordner enthält nur die Werkzeuge (wenige KB). Deine Daten kommen erst beim
+Sichern dazu, in den Unterordner Daten – danach ist der Ordner so groß wie dein Claude-Setup.
+
+SCHNELLSTER WEG (ohne Fragen, nimmt alles mit)
+  Alter Rechner:  Ordner nach D:\Claude-Umzug legen, 1-ALLES-SICHERN.bat doppelklicken.
+  Neuer Rechner:  Claude Desktop + Claude Code einmal starten und anmelden, schließen,
+                  dann 2-ALLES-WIEDERHERSTELLEN.bat doppelklicken. Checkliste abhaken.
+
+Der ausführliche Weg mit Auswahl steht hier drunter.
+
 
 AUF DEM ALTEN RECHNER
 ---------------------
