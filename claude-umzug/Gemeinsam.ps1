@@ -5,6 +5,7 @@ $ErrorActionPreference = 'Continue'
 try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch { }
 $script:Utf8OhneBom = New-Object System.Text.UTF8Encoding($false)
 $script:IstPs7 = $PSVersionTable.PSVersion.Major -ge 7
+$script:Schnell = $false   # true = keine Rueckfragen, immer die Standardantwort
 
 # Ordner, die sich neu installieren/erzeugen lassen und standardmaessig nicht kopiert werden
 $script:NeuInstallierbar = @('node_modules', '.venv', 'venv', '__pycache__', '.next', '.nuxt', '.turbo',
@@ -141,6 +142,7 @@ function Invoke-Tool([string]$Exe, [string[]]$Argumente = @()) {
 }
 
 function Read-JaNein([string]$Frage, [bool]$Standard = $true) {
+    if ($script:Schnell) { Write-Host "$Frage -> $(if ($Standard) { 'Ja' } else { 'Nein' })"; return $Standard }
     $hinweis = if ($Standard) { '[J/n]' } else { '[j/N]' }
     while ($true) {
         $a = Read-Host "$Frage $hinweis"

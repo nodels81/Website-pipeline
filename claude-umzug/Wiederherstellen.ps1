@@ -4,9 +4,10 @@
 #   claude_desktop_config.json zusammen (UTF-8 ohne BOM)
 # - passt Pfade an, wenn der Benutzername anders ist (auch die Ordnernamen unter .claude\projects)
 # - legt Projekte an dieselben Pfade zurueck und zeigt am Ende eine Checkliste
-param([string]$Quelle = $PSScriptRoot)
+param([string]$Quelle = $PSScriptRoot, [switch]$Schnell)
 
 . (Join-Path $PSScriptRoot 'Gemeinsam.ps1')
+$script:Schnell = $Schnell.IsPresent
 
 $invPfad = Join-Path $Quelle 'inventar.json'
 if (-not (Test-Path -LiteralPath $invPfad)) { Write-Host "inventar.json nicht gefunden in $Quelle. Wurde Sichern.bat ausgefuehrt?" -ForegroundColor Red; return }
@@ -62,7 +63,8 @@ foreach ($e in ($eintraege | Where-Object { $_.Basis -eq 'Absolut' })) {
     Write-Host ''
     Write-Host "Laufwerk $lw gibt es hier nicht. Betroffen:" -ForegroundColor Yellow
     $eintraege | Where-Object { $_.Basis -eq 'Absolut' -and $_.Original -like "$lw*" } | ForEach-Object { Write-Host "  $($_.Original)" }
-    $a = Read-Host "Neuer Basisordner dafuer (z. B. C:\Laufwerk-$($lw.TrimEnd(':'))), Enter = ueberspringen"
+    if ($Schnell) { $a = "C:\Laufwerk-$($lw.TrimEnd(':'))"; Write-Host "  -> kommt nach $a" }
+    else { $a = Read-Host "Neuer Basisordner dafuer (z. B. C:\Laufwerk-$($lw.TrimEnd(':'))), Enter = ueberspringen" }
     $lwZiel[$lw] = if ([string]::IsNullOrWhiteSpace($a)) { $null } else { $a.Trim().Trim('"').TrimEnd('\') + '\' }
 }
 function Get-Target($e) {

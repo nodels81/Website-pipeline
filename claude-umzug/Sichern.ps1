@@ -1,8 +1,9 @@
 ﻿# Schritt 2 + 3: Sichern und Pruefen. Liest Inventur\inventur-roh.json (von Inventur.ps1),
 # laesst dich die Auswahl bestaetigen, kopiert mit robocopy und vergleicht danach Original und Sicherung.
-param([string]$Ziel = $PSScriptRoot)
+param([string]$Ziel = $PSScriptRoot, [switch]$Schnell)
 
 . (Join-Path $PSScriptRoot 'Gemeinsam.ps1')
+$script:Schnell = $Schnell.IsPresent
 
 $invPfad = Join-Path $Ziel 'Inventur\inventur-roh.json'
 if (-not (Test-Path -LiteralPath $invPfad)) {
@@ -45,7 +46,18 @@ function Show-Auswahl {
 Write-Host ''
 Write-Host '=== Claude-Umzug: Sichern ===' -ForegroundColor Cyan
 Write-Host "Ziel: $Ziel"
-while ($true) {
+if ($Schnell) {
+    # Alles mitnehmen ausser Caches/Programmen; auch Schluessel und Anmeldedaten (SSH, GitHub-CLI, Erweiterungen)
+    foreach ($x in $E) {
+        if ($x.Gruppe -eq 'Programme (neu installieren)') { continue }
+        if ($x.Empfehlung -ne 'nein' -or $x.Titel -match '\.config\\gh|credentials') { $x.Mitnehmen = $true }
+        if ($x.Gruppe -eq 'Claude Desktop' -and $x.Empfehlung -eq 'optional') { $x.Mitnehmen = $false }
+    }
+    $s = ($E | Where-Object { $_.Mitnehmen } | Measure-Object Bytes -Sum).Sum
+    $f = Get-Frei
+    if ($null -ne $f -and $s -gt $f) { Write-Host 'Der Platz auf der Platte reicht nicht fuer alles - bitte unten auswaehlen.' -ForegroundColor Red; $script:Schnell = $false; $Schnell = $false }
+}
+while (-not $Schnell) {
     $summe = Show-Auswahl
     Write-Host 'Nummern umschalten, z. B. "3 7 12-15"  ("+5" = an, "-5" = aus).  Enter = weiter,  q = abbrechen'
     $in = Read-Host 'Auswahl'
