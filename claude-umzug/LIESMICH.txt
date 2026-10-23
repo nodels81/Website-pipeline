@@ -1,0 +1,76 @@
+﻿CLAUDE-UMZUG – SO GEHT'S
+========================
+
+Alles läuft per Doppelklick. Die Fenster bleiben am Ende offen, bis du eine Taste drückst.
+
+
+AUF DEM ALTEN RECHNER
+---------------------
+
+1. Den ganzen Ordner "Claude-Umzug" nach D:\Claude-Umzug kopieren (D: = Wechselplatte).
+   Wichtig: von dort aus starten, nicht aus "Downloads".
+
+2. Inventur.bat doppelklicken.
+   - Liest nur, kopiert nichts. Dauert je nach Platte ein paar Minuten (sucht Git-Projekte).
+   - Danach liegt der Bericht in D:\Claude-Umzug\Inventur\Bericht.txt
+   - Den Bericht an Claude schicken, wenn du Rat brauchst, was mit soll.
+     (Er enthält Pfade und Projektnamen, aber keine Passwörter oder Schlüssel.)
+
+3. Sichern.bat doppelklicken.
+   - Zeigt die Liste mit Nummern. [x] = wird kopiert.
+     Nummern eintippen zum An-/Abwählen, z. B.  3 7 12-15   oder  -12  bzw.  +30
+     Enter = weiter.
+   - Fragt, ob node_modules/.venv weggelassen werden sollen (empfohlen: Ja).
+   - Fragt, ob Geheimnisse (.env, API-Schlüssel, SSH-Schlüssel) mitkommen sollen.
+   - Fragt, ob laufende Claude-Programme beendet werden dürfen.
+     -> Vorher in Claude Desktop/Claude Code alles abschließen.
+     -> Sichern.bat NICHT aus Claude Code heraus starten, sondern per Doppelklick.
+   - Am Ende: D:\Claude-Umzug\pruefung.txt zeigt, ob alles vollständig kopiert wurde.
+     "ABWEICH." bei einzelnen Sitzungsdateien ist normal, wenn Claude währenddessen lief.
+
+
+AUF DEM NEUEN RECHNER
+---------------------
+
+4. Vorher einmal Claude Desktop UND Claude Code starten, anmelden, wieder schließen.
+   (Dann sind die Ordner angelegt, und deine neue Anmeldung bleibt erhalten.)
+
+5. Wechselplatte anschließen, im Ordner Claude-Umzug Wiederherstellen.bat doppelklicken.
+   - Sichert zuerst, was dort schon an Claude-Daten liegt (Ordner/Dateien *.vor-umzug-DATUM).
+   - Spielt alles ein, ohne neuere Dateien zu überschreiben.
+   - settings.json, .claude.json und claude_desktop_config.json werden zusammengeführt,
+     nicht ersetzt. Wo beide Rechner etwas anderes eingestellt haben, gewinnt der neue Rechner;
+     die Checkliste nennt diese Stellen.
+   - Ist dein Benutzername anders, werden die Pfade automatisch angepasst, auch die
+     Sitzungsordner. Mit "claude --resume" findest du alte Sitzungen wieder.
+   - Projekte kommen an dieselben Pfade zurück. Gibt es ein Laufwerk (z. B. E:) nicht,
+     wirst du nach einem neuen Ort gefragt.
+
+6. Die Checkliste abarbeiten. Sie öffnet sich am Ende im Editor und liegt auch auf dem Desktop:
+   was nachinstalliert werden muss (Node, Python, uv, npm-Pakete …) und wo du dich neu
+   anmelden musst.
+
+
+WAS WO LIEGT
+------------
+  Daten\Benutzerordner\...   alles aus C:\Users\<du>\ (gleiche Ordnerstruktur)
+  Daten\Laufwerk_E\...       Projekte von anderen Laufwerken
+  inventar.json              jeder Originalpfad -> Ort in der Sicherung, alter Benutzername
+  software.txt               installierte Programme, npm-/pip-/uv-/pipx-Pakete
+  winget-export.json         zum Nachinstallieren: winget import -i winget-export.json
+  pruefung.txt               Vergleich Original <-> Sicherung
+  Logs\                      robocopy-Protokolle
+
+
+SICHERHEIT
+----------
+Wenn Geheimnisse mitgenommen wurden, liegen sie unverschlüsselt auf der Platte.
+Nach dem erfolgreichen Umzug den Ordner D:\Claude-Umzug\Daten löschen oder die Platte sicher
+aufbewahren. Die *.vor-umzug-*-Ordner auf dem neuen Rechner kannst du löschen, wenn alles läuft.
+
+
+KOMMT VON ALLEIN MIT DEM KONTO (muss nicht kopiert werden)
+---------------------------------------------------------
+Chats, Projekte und Artefakte auf claude.ai, Memory von claude.ai, Cloud-Sitzungen von
+Claude Code (claude.ai/code), geplante Cloud-Aufgaben, Konnektoren (Gmail, Drive, Kalender …),
+GitHub-Verknüpfung, Abo.
